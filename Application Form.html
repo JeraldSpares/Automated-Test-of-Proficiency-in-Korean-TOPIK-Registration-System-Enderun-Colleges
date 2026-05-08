@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'DM Sans',sans-serif;background:#FAF6F1;min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+    /* ── HEADER ── */
+    .header{background:linear-gradient(135deg,#2C1810 0%,#4A3222 50%,#6B4A1C 100%);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+    .header-left{display:flex;align-items:center;gap:12px;}
+    .header-logo{width:34px;height:34px;border-radius:8px;background:rgba(212,168,67,0.2);display:flex;align-items:center;justify-content:center;}
+    .header-logo svg{width:18px;height:18px;fill:#D4A843;}
+    .header-title{color:#fff;font-size:15px;font-weight:700;letter-spacing:0.5px;}
+    .header-right{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,0.4);font-size:12px;font-weight:500;}
+    .lang-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:6px 12px;border-radius:20px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;letter-spacing:0.5px;}
+    .lang-btn:hover{background:rgba(255,255,255,0.2);}
+    .lang-btn svg{width:14px;height:14px;fill:#fff;}
+
+    /* ═══════════════════════════════
+       LANDING PAGE (2 BOXES)
+    ═══════════════════════════════ */
+    #landing-screen{max-width:780px;margin:0 auto;padding:60px 20px;}
+    #landing-screen.hidden{display:none!important;}
+    .landing-hero{text-align:center;margin-bottom:48px;animation:fadeSlide 0.5s ease;}
+    .landing-hero h1{font-size:32px;font-weight:800;color:#2C1810;margin-bottom:8px;letter-spacing:-0.5px;}
+    .landing-hero p{font-size:15px;color:#8B7B6B;line-height:1.7;max-width:500px;margin:0 auto;}
+    .landing-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;animation:fadeSlide 0.6s ease 0.1s backwards;}
+    .landing-card{background:#FFFDF9;border-radius:20px;border:2px solid #E8DDD0;padding:40px 30px;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.23,1,0.32,1);position:relative;overflow:hidden;}
+    .landing-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;transition:height 0.3s;}
+    .landing-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(44,24,16,0.08);border-color:#B8A99A;}
+    .landing-card:hover::before{height:6px;}
+    .landing-card.apply-card::before{background:linear-gradient(90deg,#2C1810,#6B4A1C);}
+    .landing-card.track-card::before{background:linear-gradient(90deg,#D4A843,#B8963B);}
+    .landing-icon{width:72px;height:72px;border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+    .apply-card .landing-icon{background:linear-gradient(135deg,#2C1810,#4A3222);}
+    .track-card .landing-icon{background:linear-gradient(135deg,#D4A843,#B8963B);}
+    .landing-icon svg{width:32px;height:32px;fill:#fff;}
+    .landing-card h2{font-size:20px;font-weight:800;color:#2C1810;margin-bottom:8px;}
+    .landing-card p{font-size:13px;color:#8B7B6B;line-height:1.6;}
+    .landing-card .arrow{margin-top:20px;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#6B4A1C;transition:gap 0.3s;}
+    .landing-card:hover .arrow{gap:10px;}
+    .landing-card .arrow svg{width:16px;height:16px;fill:#6B4A1C;}
+
+    /* ═══════════════════════════════
+       TRACKER SCREEN
+    ═══════════════════════════════ */
+    #tracker-screen{display:none;max-width:1100px;margin:0 auto;padding:32px 20px;animation:fadeSlide 0.4s ease;}
+    #tracker-screen.visible{display:block;}
+
+    .tracker-search-card{background:#FFFDF9;border-radius:18px;border:1px solid #E8DDD0;padding:36px;text-align:center;max-width:680px;margin:0 auto 32px;}
+    
+    /* 2-Column Split Layout */
+    .tracker-split-layout {display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+    @media(max-width:800px){.tracker-split-layout{grid-template-columns:1fr;}}
+    .tracker-search-card h3{font-size:18px;font-weight:700;color:#2C1810;margin-bottom:6px;}
+    .tracker-search-card p{font-size:13px;color:#8B7B6B;margin-bottom:24px;}
+    .search-row{display:flex;gap:10px;max-width:420px;margin:0 auto;}
+    .search-input{flex:1;padding:14px 16px;border:1.5px solid #E8DDD0;border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:#2C1810;outline:none;background:#FFFDF9;transition:border-color 0.2s;}
+    .search-input:focus{border-color:#6B4A1C;box-shadow:0 0 0 3px rgba(107,74,28,0.07);}
+    .search-input::placeholder{color:#C4B5A5;}
+    .search-btn{padding:14px 24px;border:none;border-radius:10px;background:linear-gradient(135deg,#5C3D2E,#2C1810);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:transform 0.2s;}
+    .search-btn:hover{transform:translateY(-2px);}
+    .search-btn:disabled{opacity:0.6;cursor:wait;}
+    .search-error{color:#C0392B;font-size:12px;font-weight:600;margin-top:12px;display:none;}
+
+    /* Tracker Results */
+    #tracker-results{display:none;animation:fadeSlide 0.4s ease;}
+    .result-header{background:linear-gradient(135deg,#2C1810,#4A3222 50%,#6B4A1C);border-radius:16px;padding:28px;color:#fff;margin-bottom:20px;position:relative;overflow:hidden;}
+    .result-header::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(212,168,67,0.06);top:-60px;right:-40px;}
+    .result-header h3{font-size:18px;font-weight:800;margin-bottom:2px;position:relative;z-index:2;}
+    .result-header .ref-mono{font-family:monospace;font-size:12px;color:rgba(255,255,255,0.5);position:relative;z-index:2;}
+    .result-status{display:inline-block;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;margin-top:10px;position:relative;z-index:2;}
+    .st-paid{background:rgba(45,143,94,0.15);color:#8FF0B7;border:1px solid rgba(45,143,94,0.3);}
+    .st-pending{background:rgba(212,168,67,0.15);color:#FFE08A;border:1px solid rgba(212,168,67,0.3);}
+    .st-waitlist{background:rgba(41,128,185,0.15);color:#87CEEB;border:1px solid rgba(41,128,185,0.3);}
+    .st-refund{background:rgba(192,57,43,0.15);color:#F5A5A0;border:1px solid rgba(192,57,43,0.3);}
+
+    /* Progress Bar */
+    .progress-card{background:#FFFDF9;border-radius:14px;border:1px solid #E8DDD0;padding:24px;margin-bottom:20px;}
+    .progress-card h4{font-size:13px;font-weight:700;color:#2C1810;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+    .progress-card h4 svg{width:16px;height:16px;fill:#D4A843;}
+    .prog-steps{display:flex;flex-direction:column;gap:0;}
+    .prog-step{display:flex;align-items:flex-start;gap:14px;position:relative;padding-bottom:20px;}
+    .prog-step:last-child{padding-bottom:0;}
+    .prog-step:last-child .prog-line{display:none;}
+    .prog-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:2;}
+    .prog-dot.done{background:#2D8F5E;}
+    .prog-dot.done svg{width:12px;height:12px;fill:#fff;}
+    .prog-dot.pending{background:#E8DDD0;}
+    .prog-line{position:absolute;left:11px;top:24px;width:2px;bottom:0;background:#E8DDD0;}
+    .prog-step.done .prog-line{background:#2D8F5E;}
+    .prog-text{font-size:13px;font-weight:600;color:#2C1810;padding-top:2px;}
+    .prog-note{font-size:11px;color:#8B7B6B;font-weight:500;margin-top:2px;}
+
+    /* Details Cards */
+    .details-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+    .detail-card{background:#FFFDF9;border-radius:14px;border:1px solid #E8DDD0;padding:20px;}
+    .detail-card h4{font-size:11px;font-weight:700;color:#A89B8C;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;}
+    .detail-row{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid #F0EAE2;}
+    .detail-row:last-child{border-bottom:none;}
+    .detail-row .dl{color:#8B7B6B;}
+    .detail-row .dv{color:#2C1810;font-weight:600;text-align:right;max-width:60%;}
+
+    /* Action Buttons */
+    .tracker-actions{display:flex;gap:12px;margin-bottom:20px;}
+    .ta-btn{flex:1;padding:14px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;}
+    .ta-btn svg{width:16px;height:16px;}
+    .ta-primary{background:linear-gradient(135deg,#5C3D2E,#2C1810);color:#fff;box-shadow:0 4px 14px rgba(44,24,16,0.2);}
+    .ta-primary:hover{transform:translateY(-2px);}
+    .ta-primary svg{fill:#fff;}
+    .ta-secondary{background:#FFFDF9;color:#5C3D2E;border:1.5px solid #E8DDD0!important;}
+    .ta-secondary:hover{background:#F5EDE3;}
+    .ta-secondary svg{fill:#5C3D2E;}
+
+    /* Edit Mode */
+    .edit-card{background:#FFFDF9;border-radius:14px;border:1px solid #E8DDD0;padding:26px;display:block;}
+    .edit-card h4{font-size:15px;font-weight:800;color:#2C1810;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+    .edit-field{margin-bottom:12px;}
+    .edit-field label{display:block;font-size:11px;font-weight:700;color:#5C3D2E;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.3px;}
+    .edit-input{width:100%;padding:11px 14px;border:1.5px solid #E8DDD0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;background:#FFFDF9;outline:none;color:#2C1810;transition:all 0.2s ease;box-sizing:border-box;}
+    .edit-input:hover:not([readonly]){border-color:#B8A99A;background:#fff;}
+    .edit-input:focus{border-color:#6B4A1C;box-shadow:0 0 0 3px rgba(107,74,28,0.08);background:#fff;}
+    .edit-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .edit-card-footer{margin-top:20px;padding-top:20px;border-top:1px solid #E8DDD0;}
+
+    /* File upload in tracker */
+    .file-section{background:#FFFDF9;border-radius:14px;border:1px solid #E8DDD0;padding:20px;margin-bottom:20px;}
+    .file-section h4{font-size:11px;font-weight:700;color:#A89B8C;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;}
+    .current-file{display:flex;align-items:center;gap:12px;padding:12px;background:#F5EDE3;border-radius:8px;margin-bottom:12px;}
+    .current-file img{width:48px;height:48px;border-radius:6px;object-fit:cover;}
+    .current-file .cf-info{flex:1;}
+    .current-file .cf-info .cf-label{font-size:11px;color:#8B7B6B;}
+    .current-file .cf-info .cf-name{font-size:13px;font-weight:600;color:#2C1810;}
+    .reupload-area{border:2px dashed #D4A843;border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:background 0.2s;}
+    .reupload-area:hover{background:#FDF6E3;}
+    .reupload-area svg{width:24px;height:24px;fill:#D4A843;margin-bottom:6px;}
+    .reupload-area .ru-text{font-size:12px;font-weight:600;color:#5C3D2E;}
+    .reupload-area .ru-sub{font-size:11px;color:#A89B8C;margin-top:2px;}
+    .file-selected-tracker{font-size:12px;color:#2D8F5E;font-weight:600;margin-top:8px;display:none;}
+
+    /* Back button */
+    .back-btn{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#6B4A1C;cursor:pointer;padding:8px 0;margin-bottom:16px;border:none;background:none;font-family:'DM Sans',sans-serif;}
+    .back-btn:hover{color:#2C1810;}
+    .back-btn svg{width:16px;height:16px;fill:#6B4A1C;}
+
+    /* Loader */
+    .inline-loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    @keyframes fadeSlide{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+    /* Toast */
+    .toast-msg{position:fixed;top:16px;right:16px;z-index:9999;padding:14px 20px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.1);animation:toastIn 0.3s ease;display:none;}
+    .toast-msg.show{display:flex;align-items:center;gap:8px;}
+    .toast-success{background:#E8F5ED;color:#1B7A43;border:1px solid #C3E6CF;}
+    .toast-error{background:#FDE8E5;color:#A63224;border:1px solid #F5C6C0;}
+    @keyframes toastIn{from{opacity:0;transform:translateX(40px);}to{opacity:1;transform:translateX(0);}}
+
+    @media(max-width:600px){
+      .landing-grid{grid-template-columns:1fr;}
+      .details-grid{grid-template-columns:1fr;}
+      .edit-row{grid-template-columns:1fr;}
+      .landing-hero h1{font-size:24px;}
+      .tracker-actions{flex-direction:column;}
+    }
+
+    /* ═══════════════════════════════
+       APPLICATION FORM (same styles)
+    ═══════════════════════════════ */
+    #form-screen{display:none;}
+    #form-screen.visible{display:block;}
+
+    .progress-section{max-width:680px;margin:32px auto 0;padding:0 20px;}
+    .steps-row{display:flex;align-items:center;justify-content:center;gap:6px;}
+    .step-dot{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;transition:all 0.4s cubic-bezier(0.23,1,0.32,1);}
+    .step-dot.done{background:#2D8F5E;color:#fff;}
+    .step-dot.active{background:#2C1810;color:#fff;box-shadow:0 4px 12px rgba(44,24,16,0.3);}
+    .step-dot.step-pending{background:#E8DDD0;color:#A89B8C;}
+    .step-dot svg{width:16px;height:16px;fill:#fff;}
+    .step-line{width:48px;height:2px;transition:background 0.4s;}
+    .step-line.done{background:#2D8F5E;}
+    .step-line.step-pending-line{background:#E8DDD0;}
+
+    .form-wrapper{max-width:680px;margin:24px auto 40px;padding:0 20px;}
+    .form-card{background:#FFFDF9;border-radius:18px;border:1px solid #E8DDD0;box-shadow:0 8px 30px rgba(61,43,31,0.04);}
+    .card-header{padding:22px 30px;border-bottom:1px solid #F0EAE2;display:flex;align-items:center;gap:14px;}
+    .card-header-icon{width:42px;height:42px;border-radius:10px;background:#2C1810;display:flex;align-items:center;justify-content:center;}
+    .card-header-icon svg{width:18px;height:18px;fill:#D4A843;}
+    .card-header h3{font-size:17px;font-weight:700;color:#2C1810;}
+    .card-header p{font-size:12px;color:#8B7B6B;margin-top:2px;}
+    .card-body{padding:30px;}
+
+    .field{margin-bottom:20px;}
+    .field label{display:block;font-size:12px;font-weight:600;color:#5C3D2E;margin-bottom:6px;letter-spacing:0.3px;}
+    .field label .req{color:#C0392B;margin-left:2px;}
+    .input-wrap{display:flex;align-items:center;gap:10px;background:#FFFDF9;border:1.5px solid #E8DDD0;border-radius:10px;padding:0 14px;transition:border-color 0.2s,box-shadow 0.2s;}
+    .input-wrap:focus-within{border-color:#6B4A1C;box-shadow:0 0 0 3px rgba(107,74,28,0.07);}
+    .input-wrap svg{width:16px;height:16px;fill:#B8A99A;flex-shrink:0;}
+    .input-wrap input,.input-wrap select{border:none;background:transparent;padding:13px 0;width:100%;font-size:14px;color:#2C1810;outline:none;font-family:'DM Sans',sans-serif;}
+    .input-wrap input::placeholder{color:#C4B5A5;}
+    .row-2{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;}
+    .full-width{grid-column:1/-1;}
+
+    .level-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+    .level-card{padding:22px;border-radius:12px;cursor:pointer;border:2px solid #E8DDD0;background:#FFFDF9;transition:all 0.25s;}
+    .level-card:hover{border-color:#B8A99A;}
+    .level-card.selected{border-color:var(--sel-color);background:var(--sel-bg);}
+    .level-card h4{font-size:20px;font-weight:800;margin-bottom:3px;}
+    .level-card .desc{font-size:12px;color:#8B7B6B;}
+    .level-card .levels{font-size:11px;color:#A89B8C;margin-top:4px;}
+
+    .upload-area{border:2px dashed #D4A843;border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:background 0.2s;background:#FFFDF920;}
+    .upload-area:hover{background:#FDF6E3;}
+    .upload-area svg{width:28px;height:28px;fill:#D4A843;margin-bottom:8px;}
+    .upload-area .main-text{font-size:13px;font-weight:600;color:#5C3D2E;}
+    .upload-area .sub-text{font-size:11px;color:#A89B8C;margin-top:4px;}
+    .file-selected{font-size:12px;color:#2D8F5E;font-weight:600;margin-top:8px;display:none;}
+
+    .review-box{margin-top:0;}
+    .review-box h4{display:none;} /* Tinanggal natin para mas malinis kasi may header na sa taas */
+    .rev-section{background:#FFFDF9;border-radius:12px;padding:22px;border:1px solid #E8DDD0;margin-bottom:14px;box-shadow:0 4px 12px rgba(44,24,16,0.02);}
+    .rev-title{font-size:11px;font-weight:700;color:#A89B8C;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:16px;border-bottom:1px solid #F0EAE2;padding-bottom:8px;}
+    .review-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px;}
+    .review-item{display:flex;flex-direction:column;gap:4px;}
+    .review-item.full{grid-column:1/-1;}
+    .review-item .lbl{font-size:10px;color:#8B7B6B;text-transform:uppercase;font-weight:700;letter-spacing:0.3px;}
+    .review-item .val{font-size:13px;color:#2C1810;font-weight:800;}
+
+    .card-footer{padding:16px 30px 26px;display:flex;justify-content:space-between;}
+    .btn{padding:12px 24px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;}
+    .btn svg{width:15px;height:15px;}
+    .btn-secondary{background:#FFFDF9;color:#5C3D2E;border:1.5px solid #E8DDD0;}
+    .btn-secondary:hover{background:#F5EDE3;}
+    .btn-secondary svg{fill:#5C3D2E;}
+    .btn-primary{background:linear-gradient(135deg,#5C3D2E,#2C1810);color:#fff;box-shadow:0 4px 14px rgba(44,24,16,0.2);}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(44,24,16,0.25);}
+    .btn-primary svg{fill:#fff;}
+    .btn-success{background:linear-gradient(135deg,#2D8F5E,#1B7A43);color:#fff;box-shadow:0 4px 14px rgba(45,143,94,0.25);}
+    .btn-success:hover{transform:translateY(-2px);}
+    .btn-success svg{fill:#fff;}
+    .btn:disabled{opacity:0.6;cursor:wait;}
+    .step-panel{display:none;animation:fadeSlide 0.35s ease;}
+    .step-panel.active{display:block;}
+
+    .success-screen{display:none;text-align:center;padding:40px 20px;max-width:500px;margin:30px auto;animation:fadeSlide 0.5s ease;}
+    .success-icon{width:80px;height:80px;border-radius:50%;background:#E8F5ED;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;}
+    .success-icon svg{width:40px;height:40px;fill:#2D8F5E;}
+    .success-screen h2{font-size:26px;font-weight:800;color:#2C1810;margin-bottom:10px;}
+    .success-screen p{font-size:14px;color:#8B7B6B;line-height:1.7;margin-bottom:20px;}
+    .ref-card{background:#FFFDF9;border:1px solid #E8DDD0;border-radius:14px;padding:20px;display:inline-block;}
+    .ref-label{font-size:10px;color:#8B7B6B;text-transform:uppercase;font-weight:700;letter-spacing:0.5px;margin-bottom:6px;}
+    .ref-value{font-size:20px;font-weight:800;color:#2C1810;font-family:monospace;letter-spacing:1px;}
+    .status-pill{display:inline-block;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;margin-top:12px;}
+    .status-pending{background:#FEF3E2;color:#9A6B14;}
+    .status-waitlist{background:#E3F2FD;color:#1565C0;}
+    .spinner-sm{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block;}
+    @media(max-width:600px){.row-2{grid-template-columns:1fr;}.level-grid{grid-template-columns:1fr;}.card-body{padding:22px;}.review-grid{grid-template-columns:1fr;}}
+
+    /* Modern Dropdowns (Thin Chevron) */
+    select.edit-input, .input-wrap select {
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%236B4A1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 12px;
+      padding-right: 36px !important;
+      cursor: pointer;
+    }
+    .edit-input[readonly] { background: #F5EDE3; color: #8B7B6B; cursor: not-allowed; opacity: 0.8; }
+
+    @media(max-width:600px){
+      .row-2, .level-grid, .edit-row, .review-grid { grid-template-columns: 1fr; }
+      .landing-grid { grid-template-columns: 1fr; }
+      .landing-hero h1 { font-size: 26px; }
+      .tracker-actions { flex-direction: column; }
+      .card-body { padding: 20px; }
+      .progress-card { padding: 20px; }
+      .detail-row .dv { max-width: 50%; text-align: right; }
+    }
+
+    /* ═══ CUSTOM SELECT DROPDOWN ═══ */
+.custom-select-group {
+  position: relative;
+  width: 100%;
+}
+.custom-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFDF9;
+  border: 1.5px solid #E8DDD0;
+  border-radius: 10px;
+  padding: 13px 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-size: 14px;
+  color: #2C1810;
+  font-family: 'DM Sans', sans-serif;
+}
+.custom-select-trigger:hover {
+  border-color: #B8A99A;
+}
+.custom-select-trigger.active {
+  border-color: #6B4A1C;
+  box-shadow: 0 0 0 3px rgba(107, 74, 28, 0.07);
+}
+.trigger-text {
+  flex: 1;
+  font-size: 14px;
+  color: #2C1810;
+}
+.trigger-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+.custom-select-trigger.active .trigger-arrow {
+  transform: rotate(180deg);
+}
+.custom-select-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #FFFDF9;
+  border: 1.5px solid #E8DDD0;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.1);
+  z-index: 100;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+.custom-select-menu.open {
+  display: block;
+}
+.custom-option {
+  padding: 11px 14px;
+  font-size: 13px;
+  color: #2C1810;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.custom-option:hover {
+  background: rgba(212, 168, 67, 0.08);
+  color: #6B4A1C;
+  padding-left: 18px;
+}
+.custom-option.selected {
+  background: #F5EDE3;
+  font-weight: 700;
+  color: #6B4A1C;
+  border-left: 3px solid #D4A843;
+}
+
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+    
+.custom-select-menu {
+  max-height: 280px !important;
+  overflow-y: auto !important;
+  z-index: 9999 !important;
+}
+
+/* ═══ DROPUP for Occupation ═══ */
+.custom-select-group.dropup .custom-select-menu {
+  top: auto;
+  bottom: calc(100% + 4px);
+}
+.custom-select-group.dropup .custom-select-trigger.active .trigger-arrow {
+  transform: rotate(0deg);
+}
+
+/* ═══ LANGUAGE SELECTION MODAL ═══ */
+.lang-modal-overlay { position:fixed; inset:0; background:rgba(44,24,16,0.6); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; z-index:99999; opacity:0; pointer-events:none; transition:all 0.3s ease; }
+.lang-modal-overlay.show { opacity:1; pointer-events:auto; }
+.lang-modal-card { background:#FFFDF9; border-radius:20px; width:100%; max-width:400px; padding:36px 32px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.15); transform:translateY(20px); transition:all 0.3s cubic-bezier(0.23,1,0.32,1); border:1px solid #E8DDD0; }
+.lang-modal-overlay.show .lang-modal-card { transform:translateY(0); }
+.lang-modal-title { font-size:22px; font-weight:800; color:#2C1810; margin-bottom:24px; line-height:1.3; letter-spacing:-0.5px; }
+.lang-modal-title span { font-size:14px; color:#8B7B6B; font-weight:600; margin-top:4px; display:block; letter-spacing:0; }
+.lang-options { display:flex; flex-direction:column; gap:12px; margin-bottom:24px; }
+.lang-opt-btn { display:flex; align-items:center; justify-content:center; gap:12px; padding:16px; border:2px solid #E8DDD0; border-radius:14px; background:#fff; cursor:pointer; transition:all 0.2s; width:100%; }
+.lang-opt-btn:hover { border-color:#D4A843; background:#FFFDF9; transform:translateY(-2px); box-shadow:0 8px 20px rgba(212,168,67,0.1); }
+.lang-opt-icon { font-size:24px; }
+.lang-opt-text { font-size:16px; font-weight:700; color:#2C1810; font-family:'DM Sans',sans-serif; }
+.lang-modal-close { background:none; border:none; color:#8B7B6B; font-size:13px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:color 0.2s; padding:8px; }
+.lang-modal-close:hover { color:#C0392B; }
+
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/></svg></div>
+      <span class="header-title">TOPIK Registration Portal</span>
+    </div>
+    <div class="header-right">
+      <button class="lang-btn" onclick="toggleLanguage()">
+        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.9 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.34.16-2h4.68c.09.66.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>
+        <span id="lang-toggle-text">EN</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       SCREEN 1: LANDING PAGE
+  ═══════════════════════════════════ -->
+  <div id="landing-screen">
+    <div class="landing-hero">
+      <h1>Enderun Extension TOPIK</h1>
+      <p>Welcome to the official registration portal for the Test of Proficiency in Korean (TOPIK)</p>
+    </div>
+    <div class="landing-grid">
+      <div class="landing-card apply-card" onclick="openLangModal('form')">
+        <div class="landing-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        </div>
+        <h2>Application Form</h2>
+        <p>New applicant? Register for the TOPIK exam. Fill out your details and submit your application.</p>
+        <div class="arrow">Start Application <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></div>
+      </div>
+      <div class="landing-card track-card" onclick="openLangModal('tracker')">
+        <div class="landing-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+        </div>
+        <h2>Track Your Application</h2>
+        <p>Already registered? Enter your Reference ID to check your status, view details, and update your information.</p>
+        <div class="arrow">Check Status <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="lang-modal-overlay" class="lang-modal-overlay">
+    <div class="lang-modal-card">
+      <h3 class="lang-modal-title">Select Language<span>언어를 선택하세요</span></h3>
+      <div class="lang-options">
+        <button class="lang-opt-btn" onclick="selectLangAndProceed('EN')">
+          <span class="lang-opt-icon">🇺🇸</span>
+          <span class="lang-opt-text">English</span>
+        </button>
+        <button class="lang-opt-btn" onclick="selectLangAndProceed('KR')">
+          <span class="lang-opt-icon">🇰🇷</span>
+          <span class="lang-opt-text">한국어</span>
+        </button>
+      </div>
+      <button class="lang-modal-close" onclick="closeLangModal()">Cancel / 취소</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       SCREEN 2: TRACKER
+  ═══════════════════════════════════ -->
+  <div id="tracker-screen">
+    <button class="back-btn" onclick="showScreen('landing')">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Back to Home
+    </button>
+
+    <div class="tracker-search-card">
+      <h3>Track Your Application</h3>
+      <p>Enter the Reference ID you received when you submitted your application (starts with TPK-)</p>
+      <div class="search-row">
+        <input type="text" class="search-input" id="track-input" placeholder="TPK-20260320-XXXXXX-XXXX" onkeypress="if(event.key==='Enter')doTrack()">
+        <button class="search-btn" id="track-btn" onclick="doTrack()">Search</button>
+      </div>
+      <div class="search-error" id="track-error"></div>
+    </div>
+
+    <div id="tracker-skeleton" style="display:none;animation:fadeSlide 0.4s ease;">
+      <div style="height:120px;border-radius:16px;margin-bottom:20px;background:linear-gradient(90deg,#E8DDD0 25%,#F0EAE2 50%,#E8DDD0 75%);background-size:800px 100%;animation:shimmer 1.5s infinite linear;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div style="height:200px;border-radius:14px;background:linear-gradient(90deg,#E8DDD0 25%,#F0EAE2 50%,#E8DDD0 75%);background-size:800px 100%;animation:shimmer 1.5s infinite linear;"></div>
+        <div style="height:200px;border-radius:14px;background:linear-gradient(90deg,#E8DDD0 25%,#F0EAE2 50%,#E8DDD0 75%);background-size:800px 100%;animation:shimmer 1.5s infinite linear;"></div>
+      </div>
+    </div>
+
+    <div id="tracker-results">
+      <!-- Filled dynamically -->
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       SCREEN 3: APPLICATION FORM
+  ═══════════════════════════════════ -->
+  <div id="form-screen">
+    <div style="max-width:680px;margin:12px auto 0;padding:0 20px;">
+      <button class="back-btn" onclick="showScreen('landing')">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Back to Home
+      </button>
+    </div>
+
+    <div class="progress-section" id="progress-section">
+      <div class="steps-row" id="steps-row"></div>
+    </div>
+
+    <div class="form-wrapper" id="form-wrapper">
+      <div class="form-card">
+
+        <!-- STEP 1: Level -->
+        <div class="step-panel active" id="step-1">
+          <div class="card-header"><div class="card-header-icon"><svg viewBox="0 0 24 24"><path d="M11.99 18.54l-7.37-5.73L3 14.07l9 7 9-7-1.63-1.27-7.38 5.74zM12 16l7.36-5.73L21 9l-9-7-9 7 1.63 1.27L12 16z"/></svg></div><div><h3>Step 1: Select Exam Level</h3><p>Choose the TOPIK level you wish to take</p></div></div>
+          <div class="card-body">
+            <div class="level-grid">
+              <div class="level-card" id="card-t1" style="--sel-color:#2980B9;--sel-bg:#2980B908" onclick="selectLevel('TOPIK I')"><h4 style="color:#2980B9">TOPIK I</h4><div class="desc">Beginner</div><div class="levels">Levels 1 – 2</div></div>
+              <div class="level-card" id="card-t2" style="--sel-color:#2D8F5E;--sel-bg:#2D8F5E08" onclick="selectLevel('TOPIK II')"><h4 style="color:#2D8F5E">TOPIK II</h4><div class="desc">Intermediate – Advanced</div><div class="levels">Levels 3 – 6</div></div>
+            </div>
+            <div class="field" style="margin-top:20px;">
+              <label>Do you require special assistance (PWD)? <span class="req">*</span></label>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+                <div class="level-card" id="pwd-no" style="--sel-color:#6B4A1C;--sel-bg:#6B4A1C08;padding:15px;text-align:center;" onclick="selectPwd('No')">
+                  <div style="font-weight:700;color:#6B4A1C;font-size:14px;"><i class="fas fa-user"></i> Regular</div>
+                  <div style="font-size:11px;color:#8B7B6B;margin-top:4px;">No special assistance needed</div>
+                </div>
+                <div class="level-card" id="pwd-yes" style="--sel-color:#D4A843;--sel-bg:#D4A84308;padding:15px;text-align:center;" onclick="selectPwd('Yes')">
+                  <div style="font-weight:700;color:#D4A843;font-size:14px;"><i class="fas fa-wheelchair"></i> PWD</div>
+                  <div style="font-size:11px;color:#8B7B6B;margin-top:4px;">I require special assistance</div>
+                </div>
+              </div>
+              <input type="hidden" id="f-pwd" value="">
+              <script>
+                function selectPwd(val) {
+                  document.getElementById('f-pwd').value = val;
+                  document.getElementById('pwd-no').classList.toggle('selected', val === 'No');
+                  document.getElementById('pwd-yes').classList.toggle('selected', val === 'Yes');
+                }
+              </script>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Personal Info -->
+        <div class="step-panel" id="step-2">
+          <div class="card-header"><div class="card-header-icon"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div><div><h3>Step 2: Personal Information</h3><p>Enter your details exactly as on your ID</p></div></div>
+          <div class="card-body"><div class="row-2">
+            <div class="field full-width"><label>Legal Name <span class="req">*</span></label><div class="input-wrap"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><input type="text" id="f-legalName" placeholder="Last Name, First Name Middle Name" required></div></div>
+            <div class="field"><label>Korean Name (한국어 이름) <span class="req">*</span></label><div class="input-wrap"><input type="text" id="f-koreanName" placeholder="e.g., 델라크루즈 후안" required></div></div>
+            <div class="field"><label>Email Address <span class="req">*</span></label><div class="input-wrap"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg><input type="email" id="f-email" placeholder="you@email.com" required></div></div>
+            <div class="field"><label>Gender <span class="req">*</span></label>
+              <div class="custom-select-group" id="f-gender-group">
+                <div class="custom-select-trigger" onclick="toggleCustomSelect('f-gender-group')">
+                  <span class="trigger-text" style="color:#C4B5A5;">Select Gender</span>
+                  <div class="trigger-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B4A1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                </div>
+                <div class="custom-select-menu">
+                  <div class="custom-option" data-value="Male" onclick="selectCustomOption('f-gender-group', 'f-gender', this)">Male</div>
+                  <div class="custom-option" data-value="Female" onclick="selectCustomOption('f-gender-group', 'f-gender', this)">Female</div>
+                  <div class="custom-option" data-value="Prefer not to say" onclick="selectCustomOption('f-gender-group', 'f-gender', this)">Prefer not to say</div>
+                </div>
+                <input type="hidden" id="f-gender" value="">
+              </div>
+            </div>
+            
+            <div class="field"><label>Date of Birth <span class="req">*</span></label><div class="input-wrap"><input type="date" id="f-dob" required></div></div>
+            <div class="field"><label>Nationality <span class="req">*</span></label><div class="input-wrap"><input type="text" id="f-nationality" placeholder="e.g., Filipino" required></div></div>
+            
+            <div class="field full-width"><label>Occupation <span class="req">*</span></label>
+  <div class="custom-select-group dropup" id="f-occupation-group">
+    <div class="custom-select-trigger" onclick="toggleCustomSelect('f-occupation-group')">
+      <span class="trigger-text" style="color:#C4B5A5;">Select Occupation</span>
+      <div class="trigger-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B4A1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+    </div>
+    <div class="custom-select-menu">
+      <div class="custom-option" data-value="1" onclick="selectCustomOption('f-occupation-group', 'f-occupation', this)">1. 학 생 (Student)</div>
+      <div class="custom-option" data-value="2" onclick="selectCustomOption('f-occupation-group', 'f-occupation', this)">2. 공무원 (Civil Servant)</div>
+      <div class="custom-option" data-value="3" onclick="selectCustomOption('f-occupation-group', 'f-occupation', this)">3. 회사원 (Company Employee)</div>
+      <div class="custom-option" data-value="4" onclick="selectCustomOption('f-occupation-group', 'f-occupation', this)">4. 자영업 (Self-employer)</div>
+      <div class="custom-option" data-value="5" onclick="selectCustomOption('f-occupation-group', 'f-occupation', this)">5. 주 부 (Homemaker)</div>
+      <div class="custom-option" data-value="6" onclick="selectCustomOption('f-occupation-group', 'f-occupation', this)">6. 교 사 (Teacher)</div>
+      <div class="custom-option" data-value="7" onclick="selectCustomOption('f-occupation-group', 'f-occupation', this)">7. 무 직 (Unemployed)</div>
+      <div class="custom-option" data-value="8" onclick="selectCustomOption('f-occupation-group', 'f-occupation', this)">8. 기 타 (Other)</div>
+    </div>
+    <input type="hidden" id="f-occupation" value="">
+  </div>
+  <div class="input-wrap" id="occ-other-wrap" style="display:none;margin-top:8px;"><input type="text" id="f-occOther" placeholder="Specify occupation"></div>
+</div>
+          </div></div>
+        </div>
+
+        <!-- STEP 3: Contact -->
+        <div class="step-panel" id="step-3">
+          <div class="card-header"><div class="card-header-icon"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div><div><h3>Step 3: Contact & Address</h3><p>How can we reach you?</p></div></div>
+          <div class="card-body"><div class="row-2">
+            <div class="field full-width"><label>Complete Address <span class="req">*</span></label><div class="input-wrap"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><input type="text" id="f-address" placeholder="Street, City, Province" required></div></div>
+            <div class="field"><label>Postal Code <span class="req">*</span></label><div class="input-wrap"><input type="text" id="f-postalCode" placeholder="e.g., 1100" required></div></div>
+            <div class="field"><label>Mobile Phone <span class="req">*</span></label><div class="input-wrap"><svg viewBox="0 0 24 24"><path d="M16 1H8C6.34 1 5 2.34 5 4v16c0 1.66 1.34 3 3 3h8c1.66 0 3-1.34 3-3V4c0-1.66-1.34-3-3-3zm-2 20h-4v-1h4v1zm3.25-3H6.75V4h10.5v14z"/></svg><input type="tel" id="f-mobilePhone" placeholder="Enter mobile number" required></div></div>
+            <div class="field"><label>Home Phone <span class="req">*</span></label><div class="input-wrap"><input type="tel" id="f-homePhone" placeholder="(02) XXXX-XXXX" required></div></div>
+          </div></div>
+        </div>
+
+        <!-- STEP 4: Survey + Upload -->
+        <div class="step-panel" id="step-4">
+          <div class="card-header"><div class="card-header-icon"><svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg></div><div><h3>Step 4: Survey & Upload</h3><p>Answer a quick survey and upload your ID</p></div></div>
+          <div class="card-body">
+            <div class="row-2">
+              <div class="field"><label>How did you hear about TOPIK? <span class="req">*</span></label>
+                <div class="custom-select-group" id="f-survey1-group">
+                  <div class="custom-select-trigger" onclick="toggleCustomSelect('f-survey1-group')">
+                    <span class="trigger-text" style="color:#C4B5A5;">Select an option</span>
+                    <div class="trigger-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B4A1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                  </div>
+                  <div class="custom-select-menu">
+                    <div class="custom-option" data-value="1" onclick="selectCustomOption('f-survey1-group','f-survey1',this)">1. 방송 TV/Radio</div>
+                    <div class="custom-option" data-value="2" onclick="selectCustomOption('f-survey1-group','f-survey1',this)">2. 신문 Newspaper</div>
+                    <div class="custom-option" data-value="3" onclick="selectCustomOption('f-survey1-group','f-survey1',this)">3. 잡지 Magazine</div>
+                    <div class="custom-option" data-value="4" onclick="selectCustomOption('f-survey1-group','f-survey1',this)">4. 교육기관 Educational Institute</div>
+                    <div class="custom-option" data-value="5" onclick="selectCustomOption('f-survey1-group','f-survey1',this)">5. 포스터 Poster</div>
+                    <div class="custom-option" data-value="6" onclick="selectCustomOption('f-survey1-group','f-survey1',this)">6. 친지 Acquaintance</div>
+                    <div class="custom-option" data-value="7" onclick="selectCustomOption('f-survey1-group','f-survey1',this)">7. 친구 Friend</div>
+                    <div class="custom-option" data-value="8" onclick="selectCustomOption('f-survey1-group','f-survey1',this)">8. 인터넷 Internet</div>
+                    <div class="custom-option" data-value="9" onclick="selectCustomOption('f-survey1-group','f-survey1',this)">9. 토픽홈페이지 Official TOPIK Website</div>
+                    <div class="custom-option" data-value="10" onclick="selectCustomOption('f-survey1-group','f-survey1',this)">10. 기타 Other</div>
+                  </div>
+                  <input type="hidden" id="f-survey1" value="">
+                </div>
+                <div class="input-wrap" id="survey1-other-wrap" style="display:none;margin-top:8px;"><input type="text" id="f-survey1Other" placeholder="Please specify"></div>
+              </div>
+              <div class="field"><label>Reason for taking TOPIK? <span class="req">*</span></label>
+                <div class="custom-select-group" id="f-survey2-group">
+                  <div class="custom-select-trigger" onclick="toggleCustomSelect('f-survey2-group')">
+                    <span class="trigger-text" style="color:#C4B5A5;">Select an option</span>
+                    <div class="trigger-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B4A1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                  </div>
+                  <div class="custom-select-menu">
+                    <div class="custom-option" data-value="1" onclick="selectCustomOption('f-survey2-group','f-survey2',this)">1. 유학 Study Abroad</div>
+                    <div class="custom-option" data-value="2" onclick="selectCustomOption('f-survey2-group','f-survey2',this)">2. 취업 Employment</div>
+                    <div class="custom-option" data-value="3" onclick="selectCustomOption('f-survey2-group','f-survey2',this)">3. 관광 Sightseeing</div>
+                    <div class="custom-option" data-value="4" onclick="selectCustomOption('f-survey2-group','f-survey2',this)">4. 학술연구 Research</div>
+                    <div class="custom-option" data-value="5" onclick="selectCustomOption('f-survey2-group','f-survey2',this)">5. 실력확인 Examine Korean Language Ability</div>
+                    <div class="custom-option" data-value="6" onclick="selectCustomOption('f-survey2-group','f-survey2',this)">6. 한국문화이해 Understanding of Korean Cultures</div>
+                    <div class="custom-option" data-value="7" onclick="selectCustomOption('f-survey2-group','f-survey2',this)">7. 비자 취득 VISA</div>
+                    <div class="custom-option" data-value="8" onclick="selectCustomOption('f-survey2-group','f-survey2',this)">8. 학점 취득 School credit</div>
+                    <div class="custom-option" data-value="9" onclick="selectCustomOption('f-survey2-group','f-survey2',this)">9. 사회통합 프로그램 KIIP</div>
+                    <div class="custom-option" data-value="10" onclick="selectCustomOption('f-survey2-group','f-survey2',this)">10. 기타 Other</div>
+                  </div>
+                  <input type="hidden" id="f-survey2" value="">
+                </div>
+                <div class="input-wrap" id="survey2-other-wrap" style="display:none;margin-top:8px;"><input type="text" id="f-survey2Other" placeholder="Please specify"></div>
+              </div>
+            </div>
+            <div class="field" style="margin-top:8px;"><label>Photograph (3㎝×4㎝) <span class="req">*</span></label>
+              <div class="upload-area" onclick="document.getElementById('f-file').click()"><svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg><div class="main-text" id="upload-text">Click to upload your photograph</div><div class="sub-text">JPG, PNG, or PDF — max 5MB</div><input type="file" id="f-file" accept="image/*,.pdf" style="display:none" onchange="onFileSelect(this)"></div>
+              <div class="file-selected" id="file-selected-text"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5: Review & Submit -->
+        <div class="step-panel" id="step-5">
+          <div class="card-header"><div class="card-header-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><h3>Step 5: Review & Submit</h3><p>Please verify all your details before submitting</p></div></div>
+          <div class="card-body">
+            <div class="review-box" id="review-box" style="margin-top:0;"><h4>Review Your Application</h4><div class="review-grid" id="review-grid"></div></div>
+          </div>
+        </div>
+
+        <div class="card-footer" id="card-footer"><div id="nav-left"></div><div id="nav-right"></div></div>
+      </div>
+    </div>
+
+    <div class="success-screen" id="success-screen">
+      <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+      <h2>Application Submitted!</h2>
+      <p id="success-msg">Your registration has been received.</p>
+      <div class="ref-card"><div class="ref-label">Your Reference ID</div><div class="ref-value" id="success-ref">—</div></div><br>
+      <div id="success-status-pill"></div>
+      <p style="font-size:12px;color:#A89B8C;margin-top:20px;">Keep this Reference ID to track your application.</p><br>
+      <button class="btn btn-primary" style="margin-top:10px;" onclick="resetApplicationForm()">Submit New Application</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-msg" id="toast-msg"></div>
+
+<script>
+  // ════════════════════════════════
+  //  SCREEN & MODAL MANAGEMENT
+  // ════════════════════════════════
+  let targetScreenAfterLang = '';
+
+  function openLangModal(target) {
+    targetScreenAfterLang = target;
+    document.getElementById('lang-modal-overlay').classList.add('show');
+  }
+
+  function closeLangModal() {
+    document.getElementById('lang-modal-overlay').classList.remove('show');
+  }
+
+  function selectLangAndProceed(langCode) {
+    currentLang = langCode;
+    localStorage.setItem('topik_lang', currentLang);
+    applyLanguage(); // Translations apply immediately
+    closeLangModal();
+    showScreen(targetScreenAfterLang);
+  }
+
+  function showScreen(screen) {
+    document.getElementById('landing-screen').className = screen === 'landing' ? '' : 'hidden';
+    document.getElementById('tracker-screen').className = screen === 'tracker' ? 'visible' : '';
+    document.getElementById('form-screen').className = screen === 'form' ? 'visible' : '';
+    if (screen === 'form') { renderProgress(); renderNav(); }
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function showToast(msg, type) {
+    var t = document.getElementById('toast-msg');
+    t.className = 'toast-msg show ' + (type === 'error' ? 'toast-error' : 'toast-success');
+    t.innerText = msg;
+    setTimeout(function(){ t.className = 'toast-msg'; }, 4000);
+  }
+
+  // ════════════════════════════════
+  //  TRACKER
+  // ════════════════════════════════
+  var trackedData = null;
+
+  function doTrack() {
+    var refId = document.getElementById('track-input').value.trim();
+    var errEl = document.getElementById('track-error');
+    var btn = document.getElementById('track-btn');
+    errEl.style.display = 'none';
+    if (!refId) { errEl.innerText = 'Please enter a Reference ID.'; errEl.style.display = 'block'; return; }
+    btn.disabled = true; btn.innerHTML = '<span class="inline-loader"></span>';
+    document.getElementById('tracker-skeleton').style.display = 'block';
+    document.getElementById('tracker-results').style.display = 'none';
+    google.script.run.withSuccessHandler(function(data) {
+      btn.disabled = false; btn.innerText = 'Search';
+      document.getElementById('tracker-skeleton').style.display = 'none';
+      if (!data || !data.found) { errEl.innerText = 'No application found with that Reference ID. Please check and try again.'; errEl.style.display = 'block'; document.getElementById('tracker-results').style.display = 'none'; return; }
+      trackedData = data;
+      renderTrackerResults(data);
+    }).withFailureHandler(function(err) {
+      btn.disabled = false; btn.innerText = 'Search';
+      document.getElementById('tracker-skeleton').style.display = 'none';
+      errEl.innerText = 'Connection error. Please try again.'; errEl.style.display = 'block';
+    }).trackStudentByRefId(refId);
+  }
+
+  function renderTrackerResults(d) {
+    var stClass = d.status === 'PAID' ? 'st-paid' : d.status.includes('PENDING') ? 'st-pending' : d.status === 'WAITLIST' ? 'st-waitlist' : 'st-refund';
+    var stLabel = d.status === 'PAID' ? 'CONFIRMED & PAID' : d.status;
+    
+    var html = '<div class="tracker-split-layout">';
+    
+    // ─── LEFT COLUMN: Tracker Info ───
+    html += '<div class="tracker-info-col">';
+    
+    // Header
+    html += '<div class="result-header"><h3>' + d.name + '</h3><div class="ref-mono">' + d.refId + '</div><div class="result-status ' + stClass + '">' + stLabel + '</div>';
+    if (d.studentNo && String(d.studentNo).length > 5) html += '<div style="margin-top:8px;font-size:22px;font-weight:800;color:#D4A843;letter-spacing:1px;position:relative;z-index:2;">' + d.studentNo + '</div>';
+    if (d.status.includes('PENDING') || d.status === 'WAITLIST') {
+      // TODO: Replace with your own Shopify store handle and product variant IDs
+      var variantId = (d.level.includes("II") || d.level.includes("2")) ? 'YOUR_TOPIK_II_VARIANT_ID' : 'YOUR_TOPIK_I_VARIANT_ID';
+      var payLink = 'https://YOUR-STORE.myshopify.com/cart/' + variantId + ':1?attributes[RefID]=' + d.refId;
+      html += '<br><a href="'+payLink+'" target="_blank" style="display:inline-block;margin-top:15px;padding:10px 20px;background:#D4A843;color:#2C1810;font-weight:800;border-radius:8px;text-decoration:none;position:relative;z-index:2;font-size:13px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:#2C1810;vertical-align:middle;margin-right:5px;"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg> PROCEED TO PAYMENT</a>';
+    }
+    html += '</div>';
+
+    // Progress
+    html += '<div class="progress-card"><h4><svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg> Application Progress</h4><div class="prog-steps">';
+    d.progress.forEach(function(p, i) {
+      var isDone = p.done;
+      html += '<div class="prog-step' + (isDone ? ' done' : '') + '"><div class="prog-dot ' + (isDone ? 'done' : 'pending') + '">' + (isDone ? '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : '') + '</div><div class="prog-line"></div><div><div class="prog-text">' + p.step + '</div>' + (p.note ? '<div class="prog-note">' + p.note + '</div>' : '') + '</div></div>';
+    });
+    html += '</div></div>';
+    
+    html += '</div>'; // End Left Column
+
+
+    // ─── RIGHT COLUMN: Edit Form & Upload ───
+    html += '<div class="tracker-edit-col">';
+    
+    var occ = esc(d.occupation || '');
+    html += '<div class="edit-card" id="edit-card"><h4><svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#D4A843;"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg> Edit Your Information</h4>';
+    
+    // 1. PWD Custom Select
+    var pwdIsYes = /^yes/i.test(d.pwd);
+    var pwdVal = pwdIsYes ? 'Yes' : 'No';
+    var pwdLabel = pwdIsYes ? 'Yes (PWD)' : 'No (Regular)';
+    var pwdHTML = '<div class="custom-select-group" id="ed-pwd-group"><div class="custom-select-trigger" onclick="toggleCustomSelect(\'ed-pwd-group\')"><span class="trigger-text" style="color:#2C1810;">' + pwdLabel + '</span><div class="trigger-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B4A1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div></div><div class="custom-select-menu"><div class="custom-option' + (!pwdIsYes?' selected':'') + '" data-value="No" onclick="selectCustomOption(\'ed-pwd-group\', \'ed-pwd\', this)">No (Regular)</div><div class="custom-option' + (pwdIsYes?' selected':'') + '" data-value="Yes" onclick="selectCustomOption(\'ed-pwd-group\', \'ed-pwd\', this)">Yes (PWD)</div></div><input type="hidden" id="ed-pwd" value="' + pwdVal + '"></div>';
+    
+    html += '<div class="edit-row"><div class="edit-field"><label>TOPIK Level (Cannot be changed)</label><input class="edit-input" type="text" value="' + esc(d.level) + '" readonly></div><div class="edit-field"><label>PWD Status</label>' + pwdHTML + '</div></div>';
+    html += '<div class="edit-row"><div class="edit-field"><label>Legal Name</label><input class="edit-input" id="ed-lName" value="' + esc(d.name) + '"></div><div class="edit-field"><label>Korean Name</label><input class="edit-input" id="ed-kName" value="' + esc(d.koreanName || '') + '"></div></div>';
+    
+    // 2. Gender Custom Select
+    var g = d.gender || '';
+    var gLabel = g || 'Select Gender';
+    var genHTML = '<div class="custom-select-group" id="ed-gender-group"><div class="custom-select-trigger" onclick="toggleCustomSelect(\'ed-gender-group\')"><span class="trigger-text" style="color:#2C1810;">' + esc(gLabel) + '</span><div class="trigger-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B4A1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div></div><div class="custom-select-menu"><div class="custom-option' + (g==='Male'?' selected':'') + '" data-value="Male" onclick="selectCustomOption(\'ed-gender-group\', \'ed-gender\', this)">Male</div><div class="custom-option' + (g==='Female'?' selected':'') + '" data-value="Female" onclick="selectCustomOption(\'ed-gender-group\', \'ed-gender\', this)">Female</div><div class="custom-option' + (g==='Prefer not to say'?' selected':'') + '" data-value="Prefer not to say" onclick="selectCustomOption(\'ed-gender-group\', \'ed-gender\', this)">Prefer not to say</div></div><input type="hidden" id="ed-gender" value="' + esc(g) + '"></div>';
+    
+    html += '<div class="edit-row"><div class="edit-field"><label>Gender <span class="req">*</span></label>' + genHTML + '</div><div class="edit-field"><label>Date of Birth</label><input type="date" class="edit-input" id="ed-dob" value="' + esc(d.dob || '') + '"></div></div>';
+
+    // 3. Occupation Custom Select (Mapped to 1-8 Codes)
+    var occArr = [
+      {v:'1', l:'1. 학 생(Student)'}, {v:'2', l:'2. 공무원(Civil Servant)'},
+      {v:'3', l:'3. 회사원(Company Employee)'}, {v:'4', l:'4. 자영업(Self-employer)'},
+      {v:'5', l:'5. 주 부(Homemaker)'}, {v:'6', l:'6. 교 사(Teacher)'},
+      {v:'7', l:'7. 무 직(Unemployed)'}, {v:'8', l:'8. 기 타(Other)'}
+    ];
+    
+    var occVal = String(d.occupation || '').trim();
+    var occBase = occVal; var occOther = ''; var occLower = occVal.toLowerCase();
+    
+    if (occVal === "1" || occLower.includes("student")) occBase = "1";
+    else if (occVal === "2" || occLower.includes("civil")) occBase = "2";
+    else if (occVal === "3" || occLower.includes("company") || occLower.includes("office")) occBase = "3";
+    else if (occVal === "4" || occLower.includes("self")) occBase = "4";
+    else if (occVal === "5" || occLower.includes("home") || occLower.includes("house")) occBase = "5";
+    else if (occVal === "6" || occLower.includes("teacher")) occBase = "6";
+    else if (occVal === "7" || occLower.includes("unemp") || occLower.includes("none")) occBase = "7";
+    else if (occVal !== "") { occBase = "8"; occOther = occVal === "8" ? "" : occVal.replace(/^8?[:\-]?\s*/i, "").replace(/^Other[:\-]?\s*/i, "").trim(); }
+
+    var selectedOccObj = occArr.find(function(o){ return o.v === occBase; });
+    var occLabel = selectedOccObj ? selectedOccObj.l : 'Select Occupation';
+
+    var occHTML = '<div class="custom-select-group dropup" id="ed-occ-group"><div class="custom-select-trigger" onclick="toggleCustomSelect(\'ed-occ-group\')"><span class="trigger-text" style="color:#2C1810;">' + esc(occLabel) + '</span><div class="trigger-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B4A1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div></div><div class="custom-select-menu">';
+    occArr.forEach(function(ko) {
+      occHTML += '<div class="custom-option' + (occBase===ko.v?' selected':'') + '" data-value="'+ko.v+'" onclick="selectCustomOption(\'ed-occ-group\', \'ed-occ\', this)">'+ko.l+'</div>';
+    });
+    occHTML += '</div><input type="hidden" id="ed-occ" value="' + esc(occBase) + '"></div>';
+    occHTML += '<div id="occ-other-wrap-tracker" style="display:'+(occBase==='8'?'block':'none')+';margin-top:8px;"><input type="text" class="edit-input" id="ed-occOther" placeholder="Specify occupation" value="'+esc(occOther)+'"></div>';
+
+    html += '<div class="edit-row"><div class="edit-field"><label>Nationality</label><input class="edit-input" id="ed-nat" value="' + esc(d.nationality || '') + '"></div><div class="edit-field"><label>Occupation <span class="req">*</span></label>' + occHTML + '</div></div>';
+    html += '<div class="edit-row"><div class="edit-field"><label>Mobile Phone</label><input class="edit-input" id="ed-mob" value="' + esc(d.mobilePhone || '') + '"></div><div class="edit-field"><label>Home Phone</label><input class="edit-input" id="ed-home" value="' + esc(d.homePhone || '') + '"></div></div>';
+    html += '<div class="edit-row"><div class="edit-field"><label>Address</label><input class="edit-input" id="ed-addr" value="' + esc(d.address || '') + '"></div><div class="edit-field"><label>Postal Code</label><input class="edit-input" id="ed-zip" value="' + esc(d.postalCode || '') + '"></div></div>';
+    
+    // Uploaded Documents Section
+    html += '<div style="margin-top:24px; padding-top:24px; border-top:1px solid #E8DDD0;">';
+    html += '<h4 style="font-size:13px;font-weight:700;color:#2C1810;margin-bottom:12px;">Update ID Document</h4>';
+    html += '<div class="reupload-area" onclick="document.getElementById(\'track-file\').click()"><svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg><div class="ru-text">Upload New File (Optional)</div><div class="ru-sub">Leave this blank to keep your existing document.</div><input type="file" id="track-file" accept="image/*,.pdf" style="display:none" onchange="onTrackFileSelect(this)"></div><div class="file-selected-tracker" id="track-file-selected"></div>';
+    html += '</div>';
+
+    // Save button directly attached to the form
+    html += '<div class="edit-card-footer"><button class="ta-btn ta-primary" onclick="saveTrackerChanges()" id="save-tracker-btn" style="width:100%;"><svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg> Save Changes</button></div>';
+    
+    html += '</div></div>'; // End Right Column
+    
+    html += '</div>'; // End Split Layout
+
+    document.getElementById('tracker-results').innerHTML = html;
+    document.getElementById('tracker-results').style.display = 'block';
+  }
+
+  function dr(label, val) { return '<div class="detail-row"><span class="dl">' + label + '</span><span class="dv">' + (val || '—') + '</span></div>'; }
+  function esc(s) { return String(s || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+
+
+  function onTrackFileSelect(input) {
+    if (input.files.length > 0) {
+      var el = document.getElementById('track-file-selected');
+      el.style.display = 'block'; el.innerText = '✓ Ready: ' + input.files[0].name;
+    }
+  }
+
+  function saveTrackerChanges() {
+    if (!trackedData) return;
+    var btn = document.getElementById('save-tracker-btn');
+    btn.disabled = true; btn.innerHTML = '<span class="inline-loader"></span> Saving...';
+
+    var rawOcc = document.getElementById('ed-occ').value;
+    var finalOcc = (rawOcc === '8') ? document.getElementById('ed-occOther').value.trim() : rawOcc;
+    if (rawOcc === '8' && finalOcc !== '') finalOcc = '8 ' + finalOcc;
+
+    var formObj = {
+      pwd: document.getElementById('ed-pwd').value,
+      lName: document.getElementById('ed-lName').value,
+      kName: document.getElementById('ed-kName').value,
+      gender: document.getElementById('ed-gender').value,
+      dob: document.getElementById('ed-dob').value,
+      nat: document.getElementById('ed-nat').value,
+      occ: finalOcc,
+      addr: document.getElementById('ed-addr').value,
+      zip: document.getElementById('ed-zip').value,
+      home: document.getElementById('ed-home').value,
+      mob: document.getElementById('ed-mob').value,
+      s1: trackedData.survey1 || '', s2: trackedData.survey2 || ''
+    };
+
+    var fileInput = document.getElementById('track-file');
+    if (fileInput.files.length > 0) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var base64 = e.target.result.split(',')[1];
+        google.script.run.withSuccessHandler(onSaveComplete).withFailureHandler(onSaveFail)
+          .updateStudentFromTracker(trackedData.refId, formObj, base64, fileInput.files[0].name, fileInput.files[0].type);
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      // If NO file selected, send nulls so backend doesn't overwrite existing file
+      google.script.run.withSuccessHandler(onSaveComplete).withFailureHandler(onSaveFail)
+        .updateStudentFromTracker(trackedData.refId, formObj, null, null, null);
+    }
+  }
+
+  function onSaveComplete() {
+    var btn = document.getElementById('save-tracker-btn');
+    btn.disabled = false; btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#5C3D2E"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg> Save Changes';
+    showToast('Changes saved successfully! Your documents will be updated.', 'success');
+    doTrack(); // Refresh
+  }
+  function onSaveFail(err) {
+    var btn = document.getElementById('save-tracker-btn');
+    btn.disabled = false; btn.innerHTML = 'Save Changes';
+    showToast('Error saving. Try again.', 'error');
+  }
+
+  // ════════════════════════════════
+  //  APPLICATION FORM LOGIC
+  // ════════════════════════════════
+  var currentStep = 1, totalSteps = 5, selectedLevel = '';
+
+  document.getElementById('f-occupation').addEventListener('change', function(){ document.getElementById('occ-other-wrap').style.display = this.value === 'Other' ? 'block' : 'none'; });
+
+  function selectLevel(level) { selectedLevel = level; document.getElementById('card-t1').classList.toggle('selected', level === 'TOPIK I'); document.getElementById('card-t2').classList.toggle('selected', level === 'TOPIK II'); }
+
+  function renderProgress() {
+    var row = '';
+    for (var i = 1; i <= totalSteps; i++) {
+      if (i < currentStep) row += '<div class="step-dot done"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>';
+      else row += '<div class="step-dot ' + (i === currentStep ? 'active' : 'step-pending') + '">' + i + '</div>';
+      if (i < totalSteps) row += '<div class="step-line ' + (i < currentStep ? 'done' : 'step-pending-line') + '"></div>';
+    }
+    document.getElementById('steps-row').innerHTML = row;
+  }
+
+  function renderNav() {
+    var left = currentStep > 1 ? '<button class="btn btn-secondary" onclick="goStep(' + (currentStep-1) + ')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Back</button>' : '<div></div>';
+    var right = currentStep < totalSteps ? '<button class="btn btn-primary" onclick="goStep(' + (currentStep+1) + ')">Continue <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></button>' : '<button class="btn btn-success" id="submitBtn" onclick="submitForm()"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Submit</button>';
+    document.getElementById('nav-left').innerHTML = left; document.getElementById('nav-right').innerHTML = right;
+  }
+
+  function goStep(n) {
+    if (n > currentStep && !validateStep(currentStep)) return;
+    document.getElementById('step-' + currentStep).classList.remove('active');
+    currentStep = n;
+    document.getElementById('step-' + currentStep).classList.add('active');
+    renderProgress(); renderNav();
+    if (currentStep === 5) buildReview();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function validateStep(step) {
+    if (step === 1) {
+      if (selectedLevel === '') { showToast('Please select an Exam Level.', 'error'); return false; }
+      if (document.getElementById('f-pwd').value === '') { showToast('Please select if you require special assistance.', 'error'); return false; }
+    }
+    if (step === 2) {
+      if (!document.getElementById('f-legalName').value.trim()) { showToast('Please enter your legal name.', 'error'); return false; }
+      if (!document.getElementById('f-koreanName').value.trim()) { showToast('Please enter your Korean Name.', 'error'); return false; }
+      if (!document.getElementById('f-email').value.includes('@')) { showToast('Please enter a valid email address.', 'error'); return false; }
+      if (!document.getElementById('f-gender').value) { showToast('Please select your gender.', 'error'); return false; }
+      if (!document.getElementById('f-dob').value) { showToast('Please enter your date of birth.', 'error'); return false; }
+      if (!document.getElementById('f-nationality').value.trim()) { showToast('Please enter your nationality.', 'error'); return false; }
+      if (!document.getElementById('f-occupation').value) { showToast('Please select your occupation.', 'error'); return false; }
+      if (document.getElementById('f-occupation').value === 'Other' && !document.getElementById('f-occOther').value.trim()) { showToast('Please specify your occupation.', 'error'); return false; }
+    }
+    if (step === 3) {
+      if (!document.getElementById('f-address').value.trim()) { showToast('Please enter your complete address.', 'error'); return false; }
+      if (!document.getElementById('f-postalCode').value.trim()) { showToast('Please enter your postal code.', 'error'); return false; }
+      if (!document.getElementById('f-mobilePhone').value.trim()) { showToast('Please enter your mobile number.', 'error'); return false; }
+      if (!document.getElementById('f-homePhone').value.trim()) { showToast('Please enter your home phone.', 'error'); return false; }
+    }
+    if (step === 4) {
+      if (!document.getElementById('f-survey1').value) { showToast('Please select how you heard about TOPIK.', 'error'); return false; }
+      if (document.getElementById('f-survey1').value === 'Other' && !document.getElementById('f-survey1Other').value.trim()) { showToast('Please specify how you heard about TOPIK.', 'error'); return false; }
+      if (!document.getElementById('f-survey2').value) { showToast('Please select your reason for taking TOPIK.', 'error'); return false; }
+      if (document.getElementById('f-survey2').value === 'Other' && !document.getElementById('f-survey2Other').value.trim()) { showToast('Please specify your reason for taking TOPIK.', 'error'); return false; }
+      if (document.getElementById('f-file').files.length === 0) { showToast('Please upload your government ID photo.', 'error'); return false; }
+    }
+    return true;
+  }
+
+  function buildReview() {
+    var d_lvl = selectedLevel;
+    var d_pwd = document.getElementById('f-pwd').value;
+    var d_lName = document.getElementById('f-legalName').value;
+    var d_kName = document.getElementById('f-koreanName').value;
+    var d_email = document.getElementById('f-email').value;
+    var d_gender = document.getElementById('f-gender').value;
+    var d_dob = document.getElementById('f-dob').value;
+    var d_nat = document.getElementById('f-nationality').value;
+    var d_occ = getValWithOther('f-occupation', 'f-occOther');
+    var d_addr = document.getElementById('f-address').value;
+    var d_zip = document.getElementById('f-postalCode').value;
+    var d_mob = document.getElementById('f-mobilePhone').value;
+    var d_home = document.getElementById('f-homePhone').value;
+
+    var html = '';
+    
+    // Section 1: Exam Details
+    html += '<div class="rev-section"><div class="rev-title">Exam Details</div><div class="review-grid">';
+    html += '<div class="review-item"><span class="lbl">TOPIK Level</span><span class="val" style="color:#6B4A1C;">' + (d_lvl || '—') + '</span></div>';
+    html += '<div class="review-item"><span class="lbl">PWD Status</span><span class="val">' + (d_pwd || '—') + '</span></div>';
+    html += '</div></div>';
+
+    // Section 2: Personal Information
+    html += '<div class="rev-section"><div class="rev-title">Personal Information</div><div class="review-grid">';
+    html += '<div class="review-item full"><span class="lbl">Legal Name</span><span class="val">' + (d_lName || '—') + '</span></div>';
+    html += '<div class="review-item"><span class="lbl">Korean Name</span><span class="val">' + (d_kName || '—') + '</span></div>';
+    html += '<div class="review-item"><span class="lbl">Gender</span><span class="val">' + (d_gender || '—') + '</span></div>';
+    html += '<div class="review-item"><span class="lbl">Date of Birth</span><span class="val">' + (d_dob || '—') + '</span></div>';
+    html += '<div class="review-item"><span class="lbl">Nationality</span><span class="val">' + (d_nat || '—') + '</span></div>';
+    html += '<div class="review-item full"><span class="lbl">Occupation</span><span class="val">' + (d_occ || '—') + '</span></div>';
+    html += '</div></div>';
+
+    // Section 3: Contact & Address
+    html += '<div class="rev-section"><div class="rev-title">Contact & Address</div><div class="review-grid">';
+    html += '<div class="review-item full"><span class="lbl">Email Address</span><span class="val">' + (d_email || '—') + '</span></div>';
+    html += '<div class="review-item"><span class="lbl">Mobile Phone</span><span class="val">' + (d_mob || '—') + '</span></div>';
+    html += '<div class="review-item"><span class="lbl">Home Phone</span><span class="val">' + (d_home || '—') + '</span></div>';
+    html += '<div class="review-item full"><span class="lbl">Complete Address</span><span class="val">' + (d_addr || '—') + '</span></div>';
+    html += '<div class="review-item"><span class="lbl">Postal Code</span><span class="val">' + (d_zip || '—') + '</span></div>';
+    html += '</div></div>';
+
+    // Directly replace the box contents
+    document.getElementById('review-box').innerHTML = html;
+  }
+
+  function onFileSelect(input) {
+    if (input.files.length > 0) { document.getElementById('upload-text').innerText = input.files[0].name; document.getElementById('file-selected-text').style.display = 'block'; document.getElementById('file-selected-text').innerText = '✓ File ready: ' + input.files[0].name; }
+  }
+
+  function getValWithOther(selId, othId, triggerVal) { 
+    var v = document.getElementById(selId).value; 
+    if (v === triggerVal) { 
+      var o = document.getElementById(othId) ? document.getElementById(othId).value.trim() : ''; 
+      return o ? triggerVal + ' ' + o : triggerVal; 
+    } 
+    return v; 
+  }
+
+  function submitForm() {
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true; btn.innerHTML = '<div class="spinner-sm"></div> Submitting...';
+    var formData = {
+      level: selectedLevel, pwd: document.getElementById('f-pwd').value, legalName: document.getElementById('f-legalName').value.trim(),
+      koreanName: document.getElementById('f-koreanName').value.trim(), email: document.getElementById('f-email').value.trim(),
+      gender: document.getElementById('f-gender').value, dob: document.getElementById('f-dob').value,
+      nationality: document.getElementById('f-nationality').value.trim(), 
+      occupation: getValWithOther('f-occupation', 'f-occOther', '8'),
+      address: document.getElementById('f-address').value.trim(), postalCode: document.getElementById('f-postalCode').value.trim(),
+      homePhone: document.getElementById('f-homePhone').value.trim(), mobilePhone: document.getElementById('f-mobilePhone').value.trim(),
+      survey1: getValWithOther('f-survey1', 'f-survey1Other', '10'), 
+      survey2: getValWithOther('f-survey2', 'f-survey2Other', '10')
+    };
+    google.script.run.withSuccessHandler(function(result) {
+      if (result.success) {
+        var fi = document.getElementById('f-file');
+        if (fi.files.length > 0) { var r = new FileReader(); r.onload = function(e) { google.script.run.uploadStudentFile(result.refId, e.target.result.split(',')[1], fi.files[0].name, fi.files[0].type); }; r.readAsDataURL(fi.files[0]); }
+        document.getElementById('form-wrapper').style.display = 'none'; document.getElementById('progress-section').style.display = 'none';
+        var sc = document.getElementById('success-screen'); sc.style.display = 'block';
+        document.getElementById('success-ref').innerText = result.refId; document.getElementById('success-msg').innerText = result.message;
+        document.getElementById('success-status-pill').innerHTML = '<span class="status-pill ' + (result.status === 'WAITLIST' ? 'status-waitlist' : 'status-pending') + '">' + result.status + '</span>';
+      } else { showToast('Error: ' + result.message, 'error'); btn.disabled = false; btn.innerHTML = 'Submit'; }
+    }).withFailureHandler(function() { showToast('Connection error. Please try again.', 'error'); btn.disabled = false; btn.innerHTML = 'Submit'; }).submitStudentApplication(formData);
+  }
+
+  // === CUSTOM DROPDOWN LOGIC ===
+  function toggleCustomSelect(groupId) {
+    const group = document.getElementById(groupId);
+    if (!group) return;
+    
+    // Close all other custom selects first
+    document.querySelectorAll('.custom-select-group').forEach(function(otherGroup){
+      if (otherGroup.id !== groupId) {
+        const otherTrigger = otherGroup.querySelector('.custom-select-trigger');
+        const otherMenu = otherGroup.querySelector('.custom-select-menu');
+        if (otherTrigger) otherTrigger.classList.remove('active');
+        if (otherMenu) otherMenu.classList.remove('open');
+      }
+    });
+
+    const trigger = group.querySelector('.custom-select-trigger');
+    const menu = group.querySelector('.custom-select-menu');
+    if (trigger && menu) {
+      trigger.classList.toggle('active');
+      menu.classList.toggle('open');
+    }
+  }
+
+  function selectCustomOption(groupId, hiddenInputId, optionEl) {
+    const group = document.getElementById(groupId);
+    if (!group) return;
+
+    const triggerText = group.querySelector('.trigger-text');
+    const hiddenInput = document.getElementById(hiddenInputId);
+    const menu = group.querySelector('.custom-select-menu');
+    const trigger = group.querySelector('.custom-select-trigger');
+
+    if (triggerText && hiddenInput && menu && trigger) {
+      triggerText.innerText = optionEl.innerText;
+      triggerText.style.color = '#2C1810';
+      hiddenInput.value = optionEl.getAttribute('data-value');
+      
+      group.querySelectorAll('.custom-option').forEach(function(opt) {
+        opt.classList.remove('selected');
+      });
+      optionEl.classList.add('selected');
+
+      trigger.classList.remove('active');
+      menu.classList.remove('open');
+
+      // Special handling for "Other" occupation toggle
+      if (hiddenInputId === 'f-occupation') {
+        document.getElementById('occ-other-wrap').style.display = hiddenInput.value === '8' ? 'block' : 'none';
+      }
+      if (hiddenInputId === 'ed-occ') {
+        document.getElementById('occ-other-wrap-tracker').style.display = hiddenInput.value === '8' ? 'block' : 'none';
+      }
+      if (hiddenInputId === 'f-survey1') {
+        document.getElementById('survey1-other-wrap').style.display = hiddenInput.value === '10' ? 'block' : 'none';
+      }
+      if (hiddenInputId === 'f-survey2') {
+        document.getElementById('survey2-other-wrap').style.display = hiddenInput.value === '10' ? 'block' : 'none';
+      }
+    }
+  }
+
+  function resetApplicationForm() {
+    document.querySelectorAll('input:not([type="hidden"]), select').forEach(function(el) { el.value = ''; });
+    document.getElementById('file-selected-text').style.display = 'none';
+    document.getElementById('upload-text').innerText = 'Click to upload your photograph';
+    document.getElementById('success-screen').style.display = 'none';
+    document.getElementById('form-wrapper').style.display = 'block';
+    document.getElementById('progress-section').style.display = 'block';
+    
+    // Reset defaults
+    currentStep = 1;
+    selectedLevel = '';
+    document.getElementById('card-t1').classList.remove('selected');
+    document.getElementById('card-t2').classList.remove('selected');
+    document.getElementById('pwd-no').classList.remove('selected');
+    document.getElementById('pwd-yes').classList.remove('selected');
+    
+    document.querySelectorAll('.trigger-text').forEach(function(el) { 
+        el.innerText = 'Select an option';
+        el.style.color = '#C4B5A5';
+    });
+    
+    goStep(1);
+    showScreen('landing');
+  }
+
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('.custom-select-group')) {
+      document.querySelectorAll('.custom-select-group').forEach(function(group) {
+        const trigger = group.querySelector('.custom-select-trigger');
+        const menu = group.querySelector('.custom-select-menu');
+        if (trigger) trigger.classList.remove('active');
+        if (menu) menu.classList.remove('open');
+      });
+    }
+  });
+
+  // ════════════════════════════════
+  //  MULTILINGUAL SUPPORT (EN / KR)
+  // ════════════════════════════════
+  const krDict = {
+    "TOPIK Registration Portal": "한국어능력시험(TOPIK) 접수",
+    "Enderun Extension TOPIK": "엔데런 익스텐션 TOPIK",
+    "Welcome to the official registration portal for the Test of Proficiency in Korean (TOPIK)": "한국어능력시험(TOPIK) 공식 접수 포털에 오신 것을 환영합니다",
+    "Application Form": "원서 접수",
+    "New applicant? Register for the TOPIK exam. Fill out your details and submit your application.": "신규 지원자이신가요? TOPIK 시험에 등록하고 지원서를 제출하세요.",
+    "Start Application": "지원 시작",
+    "Track Your Application": "지원 상태 확인",
+    "Already registered? Enter your Reference ID to check your status, view details, and update your information.": "이미 등록하셨나요? 접수 번호(Reference ID)를 입력하여 상태를 확인하세요.",
+    "Check Status": "상태 확인",
+    "Back to Home": "홈으로 돌아가기",
+    "Search": "검색",
+    "Enter the Reference ID you received when you submitted your application (starts with TPK-)": "지원서 제출 시 받은 접수 번호(TPK-로 시작)를 입력하세요.",
+    "Step 1: Select Exam Level": "1단계: 시험 등급 선택",
+    "Choose the TOPIK level you wish to take": "응시할 TOPIK 등급을 선택하세요",
+    "Beginner": "초급",
+    "Levels 1 – 2": "1 – 2급",
+    "Intermediate – Advanced": "중급 – 고급",
+    "Levels 3 – 6": "3 – 6급",
+    "Do you require special assistance (PWD)?": "특별 지원(장애인)이 필요하십니까?",
+    "Regular": "일반",
+    "No special assistance needed": "특별 지원이 필요하지 않음",
+    "PWD": "장애인",
+    "I require special assistance": "특별 지원이 필요함",
+    "Step 2: Personal Information": "2단계: 개인 정보",
+    "Enter your details exactly as on your ID": "신분증과 동일하게 세부 정보를 입력하세요",
+    "Legal Name": "법적 성명",
+    "Korean Name (한국어 이름)": "한국어 이름",
+    "Email Address": "이메일 주소",
+    "Gender": "성별",
+    "Male": "남성",
+    "Female": "여성",
+    "Prefer not to say": "선택하지 않음",
+    "Date of Birth": "생년월일",
+    "Nationality": "국적",
+    "Occupation": "직업",
+    "Step 3: Contact & Address": "3단계: 연락처 및 주소",
+    "How can we reach you?": "어떻게 연락드릴까요?",
+    "Complete Address": "전체 주소",
+    "Postal Code": "우편번호",
+    "Mobile Phone": "휴대폰 번호",
+    "Home Phone": "집 전화번호",
+    "Step 4: Survey & Upload": "4단계: 설문조사 및 업로드",
+    "Answer a quick survey and upload your ID": "간단한 설문조사에 답하고 신분증을 업로드하세요",
+    "How did you hear about TOPIK?": "TOPIK에 대해 어떻게 알게 되셨습니까?",
+    "Reason for taking TOPIK?": "TOPIK 응시 목적은 무엇입니까?",
+    "Photograph (3㎝×4㎝)": "증명사진 (3㎝×4㎝)",
+    "Click to upload your photograph": "사진을 업로드하려면 클릭하세요",
+    "JPG, PNG, or PDF — max 5MB": "JPG, PNG 또는 PDF — 최대 5MB",
+    "Step 5: Review & Submit": "5단계: 검토 및 제출",
+    "Please verify all your details before submitting": "제출하기 전에 모든 세부 정보를 확인하세요",
+    "Review Your Application": "지원서 검토",
+    "Back": "뒤로",
+    "Continue": "계속",
+    "Submit": "제출",
+    "Select an option": "옵션을 선택하세요",
+    "Select Gender": "성별을 선택하세요",
+    "Select Occupation": "직업을 선택하세요",
+    "Last Name, First Name Middle Name": "성, 이름 중간 이름",
+    "e.g., 델라크루즈 후안": "예: 델라크루즈 후안",
+    "you@email.com": "you@email.com",
+    "e.g., Filipino": "예: 필리핀인",
+    "Street, City, Province": "거리, 시, 주",
+    "e.g., 1100": "예: 1100",
+    "Specify occupation": "직업을 명시해 주세요",
+    "Please specify": "명시해 주세요"
+  };
+
+  let currentLang = localStorage.getItem('topik_lang') || 'EN';
+
+  document.addEventListener("DOMContentLoaded", function() {
+    // Inject spans around text nodes safely to preserve icons/SVG
+    const elementsToTranslate = document.querySelectorAll('h1, h2, h3, h4, p, label, .arrow, .trigger-text, .desc, .levels, .main-text, .sub-text, .btn, .custom-option, .header-title, .back-btn');
+    
+    elementsToTranslate.forEach(el => {
+      Array.from(el.childNodes).forEach(node => {
+        if (node.nodeType === 3 && node.nodeValue.trim() !== '') {
+          let trimmedText = node.nodeValue.trim();
+          if (trimmedText === '*' || trimmedText === '—') return; 
+          
+          let beforeSpace = node.nodeValue.match(/^\s*/)[0];
+          let afterSpace = node.nodeValue.match(/\s*$/)[0];
+          
+          const span = document.createElement('span');
+          span.setAttribute('data-en', trimmedText);
+          span.innerText = trimmedText;
+          
+          const fragment = document.createDocumentFragment();
+          if (beforeSpace) fragment.appendChild(document.createTextNode(beforeSpace));
+          fragment.appendChild(span);
+          if (afterSpace) fragment.appendChild(document.createTextNode(afterSpace));
+          
+          el.replaceChild(fragment, node);
+        }
+      });
+    });
+
+    const inputsToTranslate = document.querySelectorAll('input[placeholder]');
+    inputsToTranslate.forEach(input => {
+      input.setAttribute('data-en-ph', input.placeholder);
+    });
+
+    applyLanguage();
+  });
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'EN' ? 'KR' : 'EN';
+    localStorage.setItem('topik_lang', currentLang);
+    applyLanguage();
+  }
+
+  function applyLanguage() {
+    const toggleBtn = document.getElementById('lang-toggle-text');
+    if (toggleBtn) toggleBtn.innerText = currentLang;
+
+    document.querySelectorAll('span[data-en]').forEach(span => {
+      const enText = span.getAttribute('data-en');
+      if (currentLang === 'KR' && krDict[enText]) {
+        span.innerText = krDict[enText];
+      } else {
+        span.innerText = enText;
+      }
+    });
+
+    document.querySelectorAll('input[data-en-ph]').forEach(input => {
+      const enPh = input.getAttribute('data-en-ph');
+      if (currentLang === 'KR' && krDict[enPh]) {
+        input.placeholder = krDict[enPh];
+      } else {
+        input.placeholder = enPh;
+      }
+    });
+  }
+
+  // Remove the old f-occupation change listener since we are using custom dropdowns now
+  // document.getElementById('f-occupation').addEventListener('change', function(){ ... });
+</script>
+</body>
+</html>

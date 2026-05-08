@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      *{margin:0;padding:0;box-sizing:border-box;}
+      
+      body{
+        font-family:'DM Sans',sans-serif;
+        min-height:100vh;
+        display:flex;
+        flex-direction:column;
+        background:#FAF6F1;
+        -webkit-font-smoothing:antialiased;
+      }
+
+      /* ═══ HEADER ═══ */
+      .header{
+        background:linear-gradient(135deg,#2C1810 0%,#4A3222 50%,#6B4A1C 100%);
+        padding:16px 32px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        position:sticky;top:0;z-index:50;
+        box-shadow:0 4px 20px rgba(44,24,16,0.15);
+      }
+      .header-left{display:flex;align-items:center;gap:12px;}
+      .header-logo{
+        width:36px;height:36px;border-radius:10px;
+        background:rgba(212,168,67,0.2);
+        display:flex;align-items:center;justify-content:center;
+      }
+      .header-logo svg{width:18px;height:18px;fill:#D4A843;}
+      .header-title{color:#fff;font-size:15px;font-weight:700;letter-spacing:0.5px;}
+      .header-sub{color:rgba(255,255,255,0.4);font-size:12px;font-weight:500;}
+
+      /* ═══ MAIN CONTAINER ═══ */
+      .main-container{
+        flex:1;display:flex;align-items:center;justify-content:center;
+        padding:32px 20px;
+      }
+      .form-card{
+        background:#FFFDF9;
+        border-radius:20px;
+        border:1px solid #E8DDD0;
+        box-shadow:0 12px 40px rgba(44,24,16,0.08);
+        max-width:620px;width:100%;
+        overflow:hidden;
+        animation:cardIn 0.5s cubic-bezier(0.23,1,0.32,1);
+      }
+      @keyframes cardIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+      /* ═══ CARD HEADER ═══ */
+      .card-hero{
+        background:linear-gradient(135deg,#2C1810 0%,#4A3222 40%,#6B4A1C 80%,#8B6340 100%);
+        padding:28px 32px;
+        color:#fff;
+        position:relative;
+        overflow:hidden;
+      }
+      .card-hero::before{
+        content:'';position:absolute;width:200px;height:200px;border-radius:50%;
+        background:rgba(212,168,67,0.06);top:-60px;right:-40px;
+      }
+      .card-hero::after{
+        content:'';position:absolute;width:120px;height:120px;border-radius:50%;
+        background:rgba(255,255,255,0.02);bottom:-30px;right:100px;
+      }
+      .hero-flex{display:flex;align-items:center;gap:16px;position:relative;z-index:2;}
+      .hero-icon{
+        width:50px;height:50px;border-radius:14px;
+        background:rgba(212,168,67,0.15);
+        display:flex;align-items:center;justify-content:center;flex-shrink:0;
+      }
+      .hero-icon svg{width:24px;height:24px;fill:#D4A843;}
+      .hero-text h2{font-size:20px;font-weight:800;margin-bottom:2px;letter-spacing:-0.3px;}
+      .hero-text p{font-size:12px;opacity:0.5;margin:0;}
+      .hero-badge{
+        position:absolute;top:20px;right:28px;
+        background:rgba(255,255,255,0.08);
+        padding:5px 12px;border-radius:16px;
+        font-size:10px;font-weight:600;
+        border:1px solid rgba(255,255,255,0.06);
+        color:rgba(255,255,255,0.6);z-index:2;
+      }
+
+      /* ═══ LOCKED INFO BAR ═══ */
+      .locked-bar{
+        background:#F5EDE3;
+        padding:14px 32px;
+        display:flex;
+        align-items:center;
+        gap:20px;
+        border-bottom:1px solid #E8DDD0;
+        flex-wrap:wrap;
+      }
+      .locked-item{display:flex;align-items:center;gap:8px;font-size:12px;}
+      .locked-item svg{width:14px;height:14px;fill:#A89B8C;flex-shrink:0;}
+      .locked-item .lock-label{color:#A89B8C;font-weight:600;}
+      .locked-item .lock-value{color:#2C1810;font-weight:700;}
+      .lock-icon{
+        width:20px;height:20px;border-radius:5px;
+        background:#E8DDD0;display:flex;align-items:center;justify-content:center;
+      }
+      .lock-icon svg{width:10px;height:10px;fill:#8B7B6B;}
+
+      /* ═══ FORM BODY ═══ */
+      .card-body{padding:28px 32px;}
+      
+      .section-divider{
+        display:flex;align-items:center;gap:10px;
+        margin:24px 0 16px;
+      }
+      .section-divider:first-child{margin-top:0;}
+      .section-divider .dot{width:6px;height:6px;border-radius:50%;background:#D4A843;}
+      .section-divider .label{
+        font-size:10px;font-weight:700;color:#A89B8C;
+        text-transform:uppercase;letter-spacing:1px;
+      }
+      .section-divider .line{flex:1;height:1px;background:#F0EAE2;}
+
+      .field-row{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
+      .field-row.full{grid-template-columns:1fr;}
+      
+      .field{margin-bottom:16px;}
+      .field label{
+        display:block;font-size:11px;font-weight:600;color:#5C3D2E;
+        margin-bottom:5px;text-transform:uppercase;letter-spacing:0.3px;
+      }
+      .field input,
+      .field select{
+        width:100%;padding:12px 14px;
+        border:1.5px solid #E8DDD0;border-radius:10px;
+        font-family:'DM Sans',sans-serif;font-size:13px;
+        background:#FFFDF9;outline:none;color:#2C1810;
+        transition:border-color 0.2s,box-shadow 0.2s;
+        box-sizing:border-box;
+      }
+      .field input:focus,
+      .field select:focus{
+        border-color:#6B4A1C;
+        box-shadow:0 0 0 3px rgba(107,74,28,0.07);
+      }
+      .field input[readonly]{
+        background:#F5F0EB;color:#8B7B6B;cursor:default;
+      }
+      .field .other-input{
+        display:none;margin-top:6px;
+      }
+
+      /* ═══ FILE UPLOAD SECTION ═══ */
+      .file-section{
+        background:#FDFAF7;
+        border:1.5px solid #E8DDD0;
+        border-radius:14px;
+        padding:20px;
+        margin-top:8px;
+      }
+      .file-section-title{
+        font-size:10px;font-weight:700;color:#A89B8C;
+        text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;
+      }
+      .current-file-card{
+        display:flex;align-items:center;gap:14px;
+        padding:14px;background:#fff;border-radius:10px;
+        border:1px solid #E8DDD0;margin-bottom:14px;
+        animation:fadeIn 0.3s ease;
+      }
+      .current-file-card img{
+        width:52px;height:52px;border-radius:8px;object-fit:cover;
+        border:1px solid #E8DDD0;
+      }
+      .current-file-info{flex:1;}
+      .current-file-info .cf-label{font-size:10px;color:#A89B8C;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;}
+      .current-file-info .cf-name{font-size:13px;font-weight:600;color:#2C1810;margin-top:2px;}
+      .current-file-info .cf-link{font-size:11px;color:#6B4A1C;text-decoration:none;font-weight:600;}
+      .current-file-info .cf-link:hover{text-decoration:underline;}
+      .remove-btn{
+        width:32px;height:32px;border-radius:8px;
+        background:#FDE8E5;border:1px solid #F5C6C0;
+        display:flex;align-items:center;justify-content:center;
+        cursor:pointer;transition:0.2s;flex-shrink:0;
+      }
+      .remove-btn:hover{background:#FADADC;border-color:#C0392B;}
+      .remove-btn svg{width:14px;height:14px;fill:#C0392B;}
+
+      .upload-zone{
+        border:2px dashed #D4A843;border-radius:12px;
+        padding:24px;text-align:center;cursor:pointer;
+        transition:background 0.2s,border-color 0.2s;
+        background:rgba(212,168,67,0.02);
+      }
+      .upload-zone:hover{background:rgba(212,168,67,0.06);}
+      .upload-zone svg{width:28px;height:28px;fill:#D4A843;margin-bottom:6px;}
+      .upload-zone .uz-main{font-size:13px;font-weight:600;color:#5C3D2E;}
+      .upload-zone .uz-sub{font-size:11px;color:#A89B8C;margin-top:3px;}
+      .file-ready{
+        font-size:12px;color:#2D8F5E;font-weight:600;margin-top:10px;
+        display:none;
+        padding:8px 12px;background:#E8F5ED;border-radius:8px;
+        border:1px solid #C3E6CF;
+      }
+
+      /* ═══ FOOTER ═══ */
+      .card-footer{
+        padding:20px 32px;
+        border-top:1px solid #E8DDD0;
+        background:#FDFAF7;
+        display:flex;gap:12px;
+      }
+      .btn{
+        padding:14px 24px;border-radius:12px;
+        font-size:13px;font-weight:700;cursor:pointer;
+        font-family:'DM Sans',sans-serif;border:none;
+        display:flex;align-items:center;justify-content:center;gap:8px;
+        transition:all 0.2s;
+      }
+      .btn-save{
+        flex:1;
+        background:linear-gradient(135deg,#2D8F5E,#1B7A43);color:#fff;
+        box-shadow:0 4px 14px rgba(45,143,94,0.25);
+      }
+      .btn-save:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(45,143,94,0.3);}
+      .btn-save:disabled{opacity:0.6;cursor:wait;transform:none;}
+      .btn-save svg{width:16px;height:16px;fill:#fff;}
+
+      /* ═══ EXPIRED STATE ═══ */
+      .expired-card{
+        text-align:center;padding:48px 32px;
+        animation:fadeIn 0.5s ease;
+      }
+      .expired-icon{
+        width:80px;height:80px;border-radius:50%;
+        background:#FEF3E2;
+        display:flex;align-items:center;justify-content:center;
+        margin:0 auto 24px;
+      }
+      .expired-icon svg{width:40px;height:40px;fill:#D4A843;}
+      .expired-card h2{font-size:22px;font-weight:800;color:#2C1810;margin-bottom:10px;}
+      .expired-card p{font-size:14px;color:#8B7B6B;line-height:1.7;max-width:380px;margin:0 auto;}
+      .expired-note{
+        background:#FEF3E2;border-left:4px solid #D4A843;
+        padding:16px;margin-top:24px;border-radius:0 8px 8px 0;
+        font-size:12px;color:#7A6B5D;text-align:left;line-height:1.6;
+      }
+      .expired-note strong{color:#5C3D2E;}
+
+      /* ═══ SUCCESS STATE ═══ */
+      .success-state{
+        text-align:center;padding:48px 32px;
+        animation:fadeIn 0.5s ease;
+      }
+      .success-circle{
+        width:80px;height:80px;border-radius:50%;
+        background:#E8F5ED;
+        display:flex;align-items:center;justify-content:center;
+        margin:0 auto 24px;
+        animation:scaleIn 0.4s cubic-bezier(0.23,1,0.32,1);
+      }
+      @keyframes scaleIn{from{transform:scale(0);}to{transform:scale(1);}}
+      .success-circle svg{width:40px;height:40px;fill:#2D8F5E;}
+      .success-state h2{font-size:22px;font-weight:800;color:#2C1810;margin-bottom:10px;}
+      .success-state p{font-size:14px;color:#8B7B6B;line-height:1.7;margin-bottom:20px;}
+      .success-hint{
+        padding:14px;background:#F5EDE3;border-radius:10px;
+        font-size:12px;color:#7A6B5D;
+      }
+
+      /* ═══ LOADER ═══ */
+      .loader-state{
+        display:none;text-align:center;padding:12px 0;
+        font-size:13px;color:#6B4A1C;font-weight:600;
+      }
+      .loader-state.show{display:flex;align-items:center;justify-content:center;gap:10px;}
+      .spinner{
+        width:18px;height:18px;
+        border:2.5px solid #E8DDD0;border-top-color:#6B4A1C;
+        border-radius:50%;animation:spin 0.7s linear infinite;
+      }
+      @keyframes spin{to{transform:rotate(360deg);}}
+      @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+      /* ═══ RESPONSIVE ═══ */
+      @media(max-width:600px){
+        .field-row{grid-template-columns:1fr;}
+        .card-body{padding:20px;}
+        .card-footer{padding:16px 20px;}
+        .locked-bar{padding:12px 20px;gap:12px;}
+        .hero-badge{display:none;}
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-left">
+        <div class="header-logo">
+          <svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/></svg>
+        </div>
+        <span class="header-title">Enderun Extension TOPIK</span>
+      </div>
+      <div class="header-sub">Update Registration Portal</div>
+    </div>
+
+    <div class="main-container">
+      <div class="form-card">
+
+        <? if (isExpired) { ?>
+          <!-- ═══ EXPIRED STATE ═══ -->
+          <div class="card-hero">
+            <div class="hero-flex">
+              <div class="hero-icon">
+                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              </div>
+              <div class="hero-text">
+                <h2>Link Expired</h2>
+                <p>This update link has already been used</p>
+              </div>
+            </div>
+          </div>
+          <div class="expired-card">
+            <p>Your registration record has already been successfully updated using this link. Each link can only be used once for security purposes.</p>
+            <div class="expired-note">
+              <strong>Need another update?</strong> Please contact the administrator directly to request a new secure update link.
+            </div>
+          </div>
+
+        <? } else { ?>
+          <!-- ═══ UPDATE FORM ═══ -->
+          <div id="form-container">
+            <div class="card-hero">
+              <div class="hero-badge">Secure Portal</div>
+              <div class="hero-flex">
+                <div class="hero-icon">
+                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                </div>
+                <div class="hero-text">
+                  <h2>Update Your Registration</h2>
+                  <p>Review and edit your TOPIK application details</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Locked Info Bar -->
+            <div class="locked-bar">
+              <div class="locked-item">
+                <div class="lock-icon"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2z"/></svg></div>
+                <span class="lock-label">Email:</span>
+                <span class="lock-value" id="display-email">—</span>
+              </div>
+              <div class="locked-item">
+                <div class="lock-icon"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2z"/></svg></div>
+                <span class="lock-label">Level:</span>
+                <span class="lock-value" id="display-level">—</span>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <!-- Hidden fields for locked values -->
+              <input type="hidden" id="email">
+              <input type="hidden" id="level">
+
+              <!-- PERSONAL DETAILS -->
+              <div class="section-divider">
+                <div class="dot"></div>
+                <div class="label">Personal Details</div>
+                <div class="line"></div>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label>PWD / Special Assistance</label>
+                  <select id="pwd"><option value="NO">No — Regular</option><option value="YES">Yes — I require special assistance</option></select>
+                </div>
+                <div class="field">
+                  <label>Gender</label>
+                  <select id="gender" onchange="checkOther('gender','genderOther','Other:')">
+                    <option value="Male">Male</option><option value="Female">Female</option>
+                    <option value="Prefer not to say">Prefer not to say</option><option value="Other:">Other</option>
+                  </select>
+                  <input type="text" id="genderOther" class="other-input" placeholder="Please specify">
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label>Legal Name (English)</label>
+                  <input type="text" id="lName" placeholder="Last Name, First Name M.I.">
+                </div>
+                <div class="field">
+                  <label>Korean Name (한국어 이름)</label>
+                  <input type="text" id="kName" placeholder="e.g., 델라크루즈 후안">
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label>Date of Birth</label>
+                  <input type="date" id="dob">
+                </div>
+                <div class="field">
+                  <label>Nationality</label>
+                  <input type="text" id="nat" value="Filipino">
+                </div>
+              </div>
+
+              <div class="field-row full">
+                <div class="field">
+                  <label>Occupation</label>
+                  <select id="occ" onchange="checkOther('occ','occOther','8')">
+                    <option value="1">1. 학 생 (Student)</option>
+                    <option value="2">2. 공무원 (Civil Servant)</option>
+                    <option value="3">3. 회사원 (Company Employee)</option>
+                    <option value="4">4. 자영업 (Self-employer)</option>
+                    <option value="5">5. 주 부 (Homemaker)</option>
+                    <option value="6">6. 교 사 (Teacher)</option>
+                    <option value="7">7. 무 직 (Unemployed)</option>
+                    <option value="8">8. 기타 Other</option>
+                  </select>
+                  <input type="text" id="occOther" class="other-input" placeholder="Please specify">
+                </div>
+              </div>
+
+              <!-- CONTACT & ADDRESS -->
+              <div class="section-divider">
+                <div class="dot"></div>
+                <div class="label">Contact & Address</div>
+                <div class="line"></div>
+              </div>
+
+              <div class="field-row full">
+                <div class="field">
+                  <label>Complete Address</label>
+                  <input type="text" id="addr" placeholder="Street, City, Province">
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label>Postal Code</label>
+                  <input type="text" id="zip" placeholder="e.g., 1100">
+                </div>
+                <div class="field">
+                  <label>Mobile Phone</label>
+                  <input type="tel" id="mob" placeholder="+63 9XX XXX XXXX">
+                </div>
+              </div>
+              <div class="field-row full">
+                <div class="field">
+                  <label>Home Phone</label>
+                  <input type="tel" id="home" placeholder="(02) XXXX-XXXX">
+                </div>
+              </div>
+
+              <!-- SURVEY -->
+              <div class="section-divider">
+                <div class="dot"></div>
+                <div class="label">Survey</div>
+                <div class="line"></div>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label>How did you hear about TOPIK?</label>
+                  <select id="s1" onchange="checkOther('s1','s1Other','10')">
+                    <option value="1">1. 방송 TV/Radio</option>
+                    <option value="2">2. 신문 Newspaper</option>
+                    <option value="3">3. 잡지 Magazine</option>
+                    <option value="4">4. 교육기관 Educational Institute</option>
+                    <option value="5">5. 포스터 Poster</option>
+                    <option value="6">6. 친지 Acquaintance</option>
+                    <option value="7">7. 친구 Friend</option>
+                    <option value="8">8. 인터넷 Internet</option>
+                    <option value="9">9. 토픽홈페이지 Official TOPIK Website</option>
+                    <option value="10">10. 기타 Other</option>
+                  </select>
+                  <input type="text" id="s1Other" class="other-input" placeholder="Please specify">
+                </div>
+                <div class="field">
+                  <label>Reason for taking TOPIK?</label>
+                  <select id="s2" onchange="checkOther('s2','s2Other','10')">
+                    <option value="1">1. 유학 Study Abroad</option>
+                    <option value="2">2. 취업 Employment</option>
+                    <option value="3">3. 관광 Sightseeing</option>
+                    <option value="4">4. 학술연구 Research</option>
+                    <option value="5">5. 실력확인 Examine Korean Language Ability</option>
+                    <option value="6">6. 한국문화이해 Understanding of Korean Cultures</option>
+                    <option value="7">7. 비자 취득 VISA</option>
+                    <option value="8">8. 학점 취득 School credit</option>
+                    <option value="9">9. 사회통합 프로그램 KIIP</option>
+                    <option value="10">10. 기타 Other</option>
+                  </select>
+                  <input type="text" id="s2Other" class="other-input" placeholder="Please specify">
+                </div>
+              </div>
+
+              <!-- FILE UPLOAD -->
+              <div class="section-divider">
+                <div class="dot"></div>
+                <div class="label">Documents</div>
+                <div class="line"></div>
+              </div>
+
+              <div class="file-section">
+                <div class="file-section-title">Update ID Photo / Document</div>
+                <div id="upload-area">
+                  <div class="upload-zone" onclick="document.getElementById('fileUpload').click()">
+                    <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+                    <div class="uz-main">Click to upload a NEW ID photo (Optional)</div>
+                    <div class="uz-sub">Leave this blank to keep your current document.</div>
+                    <input type="file" id="fileUpload" accept="image/*,.pdf" style="display:none" onchange="onFileSelect(this)">
+                  </div>
+                  <div class="file-ready" id="file-ready"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="card-footer">
+              <button class="btn btn-save" id="save-btn" onclick="submitUpdate()">
+                <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+                Save Changes
+              </button>
+            </div>
+
+            <div class="loader-state" id="loader">
+              <div class="spinner"></div>
+              Updating your record, please wait...
+            </div>
+          </div>
+
+          <!-- SUCCESS STATE (shown after save) -->
+          <div id="success-container" style="display:none;">
+            <div class="card-hero">
+              <div class="hero-flex">
+                <div class="hero-icon" style="background:rgba(45,143,94,0.15);">
+                  <svg viewBox="0 0 24 24" style="fill:#2D8F5E"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <div class="hero-text">
+                  <h2>Update Complete!</h2>
+                  <p>Your changes have been saved successfully</p>
+                </div>
+              </div>
+            </div>
+            <div class="success-state">
+              <div class="success-circle">
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              </div>
+              <h2>All Done!</h2>
+              <p>Your registration details have been refreshed. Please check your email for the updated official document.</p>
+              <div class="success-hint">You may now safely close this window.</div>
+            </div>
+          </div>
+
+          <script>
+            const refId = "<?= refId ?>";
+
+            function checkOther(selectId, inputId, triggerValue) {
+              var el = document.getElementById(inputId);
+              el.style.display = document.getElementById(selectId).value === triggerValue ? 'block' : 'none';
+            }
+
+            function setSelectValue(id, value, otherId, triggerValue) {
+              var sel = document.getElementById(id);
+              var baseVal = value;
+              var otherText = "";
+              var lowerVal = String(value || '').toLowerCase();
+
+              // Auto-convert legacy string data to number codes on load
+              if(id === 'occ') {
+                if(baseVal==="1" || lowerVal.includes("student")) baseVal = "1";
+                else if(baseVal==="2" || lowerVal.includes("civil")) baseVal = "2";
+                else if(baseVal==="3" || lowerVal.includes("company") || lowerVal.includes("office")) baseVal = "3";
+                else if(baseVal==="4" || lowerVal.includes("self")) baseVal = "4";
+                else if(baseVal==="5" || lowerVal.includes("home") || lowerVal.includes("house")) baseVal = "5";
+                else if(baseVal==="6" || lowerVal.includes("teacher")) baseVal = "6";
+                else if(baseVal==="7" || lowerVal.includes("unemp") || lowerVal.includes("none")) baseVal = "7";
+                else if(baseVal!=="") { baseVal = "8"; otherText = value==="8" ? "" : value.replace(/^8?[:\-]?\s*/i, "").replace(/^Other[:\-]?\s*/i, "").trim(); }
+              }
+              else if(id === 's1') {
+                if(baseVal==="1" || lowerVal.includes("tv") || lowerVal.includes("radio")) baseVal = "1";
+                else if(baseVal==="2" || lowerVal.includes("newspaper")) baseVal = "2";
+                else if(baseVal==="3" || lowerVal.includes("magazine")) baseVal = "3";
+                else if(baseVal==="4" || lowerVal.includes("education") || lowerVal.includes("school")) baseVal = "4";
+                else if(baseVal==="5" || lowerVal.includes("poster")) baseVal = "5";
+                else if(baseVal==="6" || lowerVal.includes("acquaintance")) baseVal = "6";
+                else if(baseVal==="7" || lowerVal.includes("friend")) baseVal = "7";
+                else if(baseVal==="8" || lowerVal.includes("internet") || lowerVal.includes("social")) baseVal = "8";
+                else if(baseVal==="9" || lowerVal.includes("website")) baseVal = "9";
+                else if(baseVal!=="") { baseVal = "10"; otherText = value==="10" ? "" : value.replace(/^10?[:\-]?\s*/i, "").replace(/^Other[:\-]?\s*/i, "").trim(); }
+              }
+              else if(id === 's2') {
+                if(baseVal==="1" || lowerVal.includes("study abroad")) baseVal = "1";
+                else if(baseVal==="2" || lowerVal.includes("employment") || lowerVal.includes("work")) baseVal = "2";
+                else if(baseVal==="3" || lowerVal.includes("sightseeing") || lowerVal.includes("travel")) baseVal = "3";
+                else if(baseVal==="4" || lowerVal.includes("research")) baseVal = "4";
+                else if(baseVal==="5" || lowerVal.includes("examine") || lowerVal.includes("check")) baseVal = "5";
+                else if(baseVal==="6" || lowerVal.includes("culture")) baseVal = "6";
+                else if(baseVal==="7" || lowerVal.includes("visa")) baseVal = "7";
+                else if(baseVal==="8" || lowerVal.includes("credit") || lowerVal.includes("school")) baseVal = "8";
+                else if(baseVal==="9" || lowerVal.includes("kiip")) baseVal = "9";
+                else if(baseVal!=="") { baseVal = "10"; otherText = value==="10" ? "" : value.replace(/^10?[:\-]?\s*/i, "").replace(/^Other[:\-]?\s*/i, "").trim(); }
+              }
+
+              var found = Array.from(sel.options).some(function(opt){ return opt.value === baseVal; });
+              if(found) { 
+                sel.value = baseVal; 
+                if (baseVal === triggerValue && otherText) document.getElementById(otherId).value = otherText;
+              }
+              else if(value) { 
+                sel.value = triggerValue; 
+                document.getElementById(otherId).value = value; 
+              }
+              checkOther(id, otherId, triggerValue);
+            }
+
+            // Load student data
+            google.script.run.withSuccessHandler(function(data){
+              if(!data) return;
+              document.getElementById('email').value = data.email || "";
+              document.getElementById('level').value = data.level || "";
+              document.getElementById('display-email').innerText = data.email || "—";
+              document.getElementById('display-level').innerText = data.level || "—";
+              document.getElementById('pwd').value = (data.pwd && data.pwd.toString().toUpperCase().includes("YES")) ? "YES" : "NO";
+              document.getElementById('lName').value = data.lName || "";
+              document.getElementById('kName').value = data.kName || "";
+              document.getElementById('dob').value = data.dob || "";
+              document.getElementById('nat').value = data.nat || "";
+              document.getElementById('addr').value = data.addr || "";
+              document.getElementById('zip').value = data.zip || "";
+              document.getElementById('home').value = data.home || "";
+              document.getElementById('mob').value = data.mob || "";
+              setSelectValue('gender', data.gender, 'genderOther', 'Other:');
+              setSelectValue('occ', data.occ, 'occOther', '8');
+              setSelectValue('s1', data.s1, 's1Other', '10');
+              setSelectValue('s2', data.s2, 's2Other', '10');
+
+              }).getStudentData(refId);
+
+            function onFileSelect(input) {
+              if(input.files.length > 0) {
+                var el = document.getElementById('file-ready');
+                el.style.display = 'block';
+                el.innerHTML = '✓ Ready to upload: ' + input.files[0].name;
+              }
+            }
+
+            function getFinalValue(selectId, otherId, triggerValue) {
+              var val = document.getElementById(selectId).value;
+              var otherTxt = document.getElementById(otherId).value.trim();
+              if (val === triggerValue) {
+                if (triggerValue === 'Other:') return otherTxt ? 'Other: ' + otherTxt : 'Other:';
+                return otherTxt ? triggerValue + ' ' + otherTxt : triggerValue;
+              }
+              return val;
+            }
+
+            function submitUpdate() {
+              var btn = document.getElementById('save-btn');
+              var loader = document.getElementById('loader');
+              btn.disabled = true;
+              btn.innerHTML = '<div class="spinner" style="width:14px;height:14px;border-width:2px;"></div> Saving...';
+              loader.classList.add('show');
+
+              var formObj = {
+                pwd: document.getElementById('pwd').value,
+                lName: document.getElementById('lName').value,
+                kName: document.getElementById('kName').value,
+                dob: document.getElementById('dob').value,
+                nat: document.getElementById('nat').value,
+                addr: document.getElementById('addr').value,
+                zip: document.getElementById('zip').value,
+                home: document.getElementById('home').value,
+                mob: document.getElementById('mob').value,
+                gender: getFinalValue('gender', 'genderOther', 'Other:'),
+                occ: getFinalValue('occ', 'occOther', '8'),
+                s1: getFinalValue('s1', 's1Other', '10'),
+                s2: getFinalValue('s2', 's2Other', '10')
+              };
+
+              var file = document.getElementById('fileUpload').files[0];
+              if(file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                  var base64 = e.target.result.split(',')[1];
+                  google.script.run.withSuccessHandler(onSuccess).withFailureHandler(function(err){
+                    btn.disabled = false; btn.innerText = 'Save Changes'; loader.classList.remove('show'); showToast('Error saving: ' + err, 'error');
+                  }).processPortalUpdate(refId, formObj, base64, file.name, file.type);
+                };
+                reader.readAsDataURL(file);
+              } else {
+                // If NO file selected, send nulls so backend doesn't overwrite existing file
+                google.script.run.withSuccessHandler(onSuccess).withFailureHandler(function(err){
+                  btn.disabled = false; btn.innerText = 'Save Changes'; loader.classList.remove('show'); showToast('Error saving: ' + err, 'error');
+                }).processPortalUpdate(refId, formObj, null, null, null);
+              }
+            }
+
+            function onSuccess(msg) {
+              document.getElementById('form-container').style.display = 'none';
+              document.getElementById('success-container').style.display = 'block';
+              window.scrollTo({top:0, behavior:'smooth'});
+            }
+          </script>
+        <? } ?>
+      </div>
+    </div>
+
+  </body>
+</html>
